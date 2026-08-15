@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Luyện Phát âm Phonics cơ bản – Ms. Thu Nguyễn</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{ font-family:Arial, Helvetica, sans-serif; margin:0; background:#f6f8fb; color:#333;}
+.hidden{display:none !important;}
+
+/* ===== HEADER ===== */
+header{ background:#1e3a8a; color:#fff; padding:18px 25px;}
+header .top{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;}
+header h1{ margin:0; font-size:22px;}
+.user-info{ font-size:14px; opacity:0.95; margin-right:10px;}
+header button{ padding:8px 14px; border:none; border-radius:6px; background:#fff; color:#1e3a8a; font-weight:600; cursor:pointer; margin-left:6px;}
+header button:hover{ opacity:0.9;}
+
+/* ===== MAIN ===== */
+main{ max-width:1100px; margin:25px auto; padding:0 15px 40px;}
+
+/* ===== SECTION ===== */
+.section{ background:#fff; margin-bottom:25px; border-radius:10px; padding:22px; box-shadow:0 4px 10px rgba(0,0,0,0.06);}
+.section h2{ margin-top:0; color:#1e3a8a; font-size:20px; border-left:5px solid #1e3a8a; padding-left:10px;}
+.section p{ line-height:1.6; font-size:15px; margin-top:12px;}
+
+/* ===== GRID ===== */
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:18px;}
+.grid a{ display:block; padding:18px; background:#f1f5ff; border-radius:10px; text-decoration:none; color:#1e3a8a; font-weight:600; text-align:center; transition:0.2s;}
+.grid a:hover:not(.locked){ background:#1e3a8a; color:#fff; transform:translateY(-2px);}
+
+/* CSS CHO TRẠNG THÁI KHÓA */
+.grid a.locked { background:#e5e7eb; color:#9ca3af; cursor:not-allowed; opacity:0.8;}
+
+/* ===== POPUP CONGRATULATIONS ===== */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); display: flex; justify-content: center;
+  align-items: center; z-index: 1000;
+}
+.modal-content {
+  background: #fff; padding: 30px; border-radius: 12px;
+  text-align: center; max-width: 400px; width: 90%;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: popIn 0.3s ease;
+}
+.modal-content h3 { color: #1e3a8a; margin-top: 0; font-size: 22px; }
+.modal-content p { color: #4b5563; font-size: 16px; margin: 15px 0 25px 0; }
+.modal-btn-group { display: flex; gap: 10px; justify-content: center; }
+.modal-btn {
+  padding: 10px 18px; border: none; border-radius: 6px;
+  font-weight: 600; cursor: pointer; transition: 0.2s;
+}
+.btn-retry { background: #e5e7eb; color: #374151; }
+.btn-retry:hover { background: #d1d5db; }
+.btn-next { background: #1e3a8a; color: #fff; }
+.btn-next:hover { opacity: 0.9; }
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ===== FOOTER ===== */
+footer{ text-align:center; font-size:13px; color:#666; padding-bottom:30px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <h1>CORE ENGLISH ROADMAP - Luyện Phát âm Phonics cơ bản</h1>
+    <div>
+      <span class="user-info" id="welcome"></span>
+      <button onclick="goHome()">Trang chủ</button>
+      <button onclick="logout()">Đăng xuất</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- GIỚI THIỆU PHONICS -->
+  <div class="section">
+    <h2>Phonics là gì?</h2>
+    <p>
+      Phonics là phương pháp học phát âm tiếng Anh dựa trên mối liên hệ giữa
+      <strong>chữ cái (letters)</strong> và <strong>âm thanh (sounds)</strong>.
+      Phương pháp này đặc biệt hiệu quả cho người mới bắt đầu hoặc mất căn bản.
+    </p>
+    <p>
+      ✔ Đọc được từ mới không cần phiên âm<br>
+      ✔ Cải thiện nghe – nói tự nhiên hơn<br>
+      ✔ Lắng nghe từ và đoán cấu tạo từ hỗ trợ làm các bài tập nghe điền từ     
+    </p>
+    <p>
+      Các bài học được chia từ <strong>Phonics A1 đến A6</strong>, giúp người học
+      tiến bộ từng bước. Để đạt hiệu quả cao hơn, người học nên kết hợp song song
+      với việc học <strong>Phiên âm Quốc tế IPA</strong>.
+    </p>
+  </div>
+
+  <!-- DANH SÁCH BÀI PHONICS -->
+  <div class="section">
+    <h2>Các bài học Phonics</h2>
+    <div class="grid" id="lessonGrid">
+      <a href="./Phonics/PhonicsA1.html" data-id="1">Phonics A1</a>
+      <a href="./Phonics/PhonicsA2.html" data-id="2">Phonics A2</a>
+      <a href="./Phonics/PhonicsA3.html" data-id="3">Phonics A3</a>
+      <a href="./Phonics/PhonicsA4.html" data-id="4">Phonics A4</a>
+      <a href="./Phonics/PhonicsA5.html" data-id="5">Phonics A5</a>
+      <a href="./Phonics/PhonicsA6.html" data-id="6">Phonics A6</a>
+    </div>
+  </div>
+</main>
+
+<!-- POPUP CONGRATULATIONS -->
+<div id="congratsModal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <h3>🎉 Congratulations!</h3>
+    <p id="congratsText">Bạn đã hoàn tất bài học thành công!</p>
+    <div class="modal-btn-group">
+      <button class="modal-btn btn-retry" onclick="retryLesson()">LUYỆN LẠI</button>
+      <button class="modal-btn btn-next" id="btnNextLesson" onclick="nextLesson()">HỌC BÀI TIẾP THEO</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © Ms. Thu Nguyễn – English for Beginners
+</footer>
+
+<script>
+/* ===== KIỂM TRA ĐĂNG NHẬP ===== */
+if(localStorage.getItem("logged") !== "1"){
+  location.href = "index.html";
+}
+
+/* ===== HIỂN THỊ TÊN NGƯỜI DÙNG ===== */
+document.getElementById("welcome").innerText = "👋 Chào mừng, " + (localStorage.getItem("email") || "Học viên");
+
+/* ===== QUẢN LÝ TIẾN ĐỘ HỌC ===== */
+// Lấy danh sách các bài đã hoàn thành (mặc định là mảng rỗng)
+let completedLessons = JSON.parse(localStorage.getItem("completedLessons")) || [];
+
+// Hàm render lại trạng thái mở/khóa các bài học
+function renderLessons() {
+  const links = document.querySelectorAll("#lessonGrid a");
+  
+  links.forEach(link => {
+    const id = parseInt(link.getAttribute("data-id"));
+    
+    // Bài A1 (id=1) luôn luôn mở.
+    // Bài khác mở nếu là bài tiếp theo liền kề bài đã hoàn thành hoặc chính bài đó đã hoàn thành.
+    const isUnlocked = id === 1 || completedLessons.includes(id) || completedLessons.includes(id - 1);
+    const isCompleted = completedLessons.includes(id);
+
+    // Reset lại nội dung cơ bản
+    let label = `Phonics A${id}`;
+    
+    if (isCompleted) {
+      link.innerText = `✅ ${label}`;
+      link.classList.remove("locked");
+      link.onclick = null; // Cho phép chuyển trang bình thường
+    } else if (isUnlocked) {
+      link.innerText = `📖 ${label}`;
+      link.classList.remove("locked");
+      link.onclick = null; // Cho phép chuyển trang bình thường
+    } else {
+      link.innerText = `🔒 ${label}`;
+      link.classList.add("locked");
+      // Khóa link nếu chưa đủ điều kiện
+      link.onclick = function(e) {
+        e.preventDefault();
+        alert(`Bạn cần hoàn thành bài Phonics A${id - 1} trước khi mở khóa bài học này!`);
+      };
+    }
+  });
+}
+
+/* ===== XỬ LÝ POPUP CHÚC MỪNG VÀ ĐIỀU HƯỚNG ===== */
+let currentFinishedLesson = null;
+
+// Hàm kiểm tra nếu có bài học vừa hoàn thành gửi tới (hoặc được gọi từ file con PhonicsAx.html)
+function checkCompletedPopup() {
+  const justFinished = localStorage.getItem("justFinishedLesson");
+  if (justFinished) {
+    currentFinishedLesson = parseInt(justFinished);
+    
+    // Cập nhật mảng các bài đã xong
+    if (!completedLessons.includes(currentFinishedLesson)) {
+      completedLessons.push(currentFinishedLesson);
+      localStorage.setItem("completedLessons", JSON.stringify(completedLessons));
+    }
+    
+    // Hiện Popup
+    const modal = document.getElementById("congratsModal");
+    const text = document.getElementById("congratsText");
+    const btnNext = document.getElementById("btnNextLesson");
+    
+    text.innerText = `Chúc mừng bạn đã hoàn thành xuất sắc bài Phonics A${currentFinishedLesson}!`;
+    
+    // Nếu là bài A6 (bài cuối), ẩn nút HỌC BÀI TIẾP THEO
+    if (currentFinishedLesson >= 6) {
+      btnNext.classList.add("hidden");
+    } else {
+      btnNext.classList.remove("hidden");
+    }
+    
+    modal.classList.remove("hidden");
+    
+    // Xóa trạng thái vừa hoàn thành để tránh lặp lại khi f5 trang
+    localStorage.removeItem("justFinishedLesson");
+  }
+}
+
+// Chức năng nút LUYỆN LẠI
+function retryLesson() {
+  if (currentFinishedLesson) {
+    location.href = `./Phonics/PhonicsA${currentFinishedLesson}.html`;
+  } else {
+    closeModal();
+  }
+}
+
+// Chức năng nút HỌC BÀI TIẾP THEO
+function nextLesson() {
+  if (currentFinishedLesson && currentFinishedLesson < 6) {
+    location.href = `./Phonics/PhonicsA${currentFinishedLesson + 1}.html`;
+  } else {
+    closeModal();
+  }
+}
+
+function closeModal() {
+  document.getElementById("congratsModal").classList.add("hidden");
+}
+
+/* ===== ĐĂNG XUẤT ===== */
+function logout(){
+  localStorage.removeItem("logged");
+  location.href = "index.html";
+}
+
+/* ===== VỀ TRANG CHỦ ===== */
+function goHome(){
+  location.href = "Home.html";
+}
+
+// Chạy khởi tạo
+renderLessons();
+checkCompletedPopup();
+</script>
+</body>
+</html>

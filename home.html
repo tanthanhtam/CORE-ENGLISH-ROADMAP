@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>CORE ENGLISH ROADMAP– Ms. Thu Nguyễn 0942642312</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
+    --primary: #1e3a8a;
+    --primary-hover: #1d4ed8;
+    --bg-color: #f1f5f9;
+    --card-bg: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
+    --success: #10b981;
+    --locked: #94a3b8;
+  }
+
+  * { box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background: var(--bg-color); color: var(--text-main); }
+  .hidden { display: none !important; }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    color: #fff;
+    padding: 20px 30px;
+    box-shadow: 0 4px 15px rgba(30, 58, 138, 0.2);
+  }
+  header .top {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  header h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+  .user-nav { display: flex; align-items: center; gap: 12px; }
+  
+  .btn-logout {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.2s ease;
+  }
+  .btn-logout:hover { background: #ef4444; color: #fff; }
+
+  .btn-reset-test {
+    padding: 6px 12px;
+    background: #f59e0b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .btn-reset-test:hover { background: #d97706; }
+
+  /* ===== MAIN CONTENT ===== */
+  main { max-width: 1200px; margin: 30px auto; padding: 0 20px 40px; }
+
+  /* ===== BANNER WELCOME ===== */
+  .welcome-banner {
+    background: #fff;
+    border-radius: 16px;
+    padding: 25px 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border-left: 6px solid var(--primary);
+  }
+  .welcome-banner h2 { margin: 0 0 8px 0; color: var(--primary); font-size: 22px; }
+  .welcome-banner p { margin: 0; color: var(--text-muted); font-size: 15px; }
+
+  /* ===== SECTION ===== */
+  .section {
+    background: var(--card-bg);
+    margin-bottom: 30px;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--primary);
+    font-size: 20px;
+    border-bottom: 2px solid var(--bg-color);
+    padding-bottom: 12px;
+  }
+
+  /* ===== GRID LESSONS ===== */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+  }
+
+  .lesson-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border: 1px solid var(--border-color);
+  }
+
+  /* Trạng thái MỞ KHÓA */
+  .lesson-card.unlocked {
+    background: #ffffff;
+    color: var(--primary);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    cursor: pointer;
+  }
+  .lesson-card.unlocked:hover {
+    background: var(--primary);
+    color: #ffffff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(30, 58, 138, 0.2);
+    border-color: var(--primary);
+  }
+  .lesson-card.unlocked .status-badge {
+    background: #dcfce7;
+    color: #166534;
+  }
+  .lesson-card.unlocked:hover .status-badge {
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+  }
+
+  /* Trạng thái KHÓA */
+  .lesson-card.locked {
+    background: #f8fafc;
+    color: var(--locked);
+    border-color: #e2e8f0;
+    cursor: not-allowed;
+    opacity: 0.75;
+  }
+  .lesson-card.locked .status-badge {
+    background: #e2e8f0;
+    color: #64748b;
+  }
+
+  .lesson-card .title { font-size: 16px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
+  .lesson-card .status-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    width: fit-content;
+  }
+
+  /* ===== AUTH STYLES ===== */
+  .auth-box {
+    max-width: 400px;
+    margin: 80px auto;
+    background: #fff;
+    padding: 35px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  }
+  .auth-box h2 { text-align: center; color: var(--primary); margin-top: 0; font-size: 24px; margin-bottom: 25px; }
+  .auth-box label { font-size: 14px; font-weight: 600; color: #475569; display: block; margin-bottom: 6px; }
+  .auth-box input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+  }
+  .auth-box input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(30,58,138,0.1); }
+  .auth-box button {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .auth-box button:hover { background: var(--primary-hover); }
+  .switch { text-align: center; margin-top: 18px; font-size: 14px; color: #64748b; }
+  .switch span { color: var(--primary); cursor: pointer; font-weight: 700; }
+
+  footer { text-align: center; font-size: 14px; color: var(--text-muted); padding: 20px 0 40px; }
+</style>
+</head>
+<body>
+
+<!-- ===== AUTH SECTION ===== -->
+<div id="auth">
+  <!-- LOGIN -->
+  <div class="auth-box" id="loginBox">
+    <h2>ĐĂNG NHẬP</h2>
+    <label>Email</label>
+    <input id="loginEmail" type="email" placeholder="Nhập email...">
+    <label>Mật khẩu</label>
+    <input id="loginPass" type="password" placeholder="Nhập mật khẩu...">
+    <button onclick="login()">Đăng nhập</button>
+    <div class="switch">
+      Chưa có tài khoản? <span onclick="showRegister()">Đăng ký</span>
+    </div>
+  </div>
+
+  <!-- REGISTER -->
+  <div class="auth-box hidden" id="registerBox">
+    <h2>ĐĂNG KÝ TÀI KHOẢN</h2>
+    <label>Email</label>
+    <input id="regEmail" type="email" placeholder="Nhập email...">
+    <label>Mật khẩu</label>
+    <input id="regPass" type="password" placeholder="Nhập mật khẩu...">
+    <label>Xác nhận mật khẩu</label>
+    <input id="regPass2" type="password" placeholder="Nhập lại mật khẩu...">
+    <label>Mã PIN (Quản trị)</label>
+    <input id="regPin" type="password" placeholder="Nhập mã PIN...">
+    <button onclick="register()">Đăng ký</button>
+    <div class="switch">
+      Đã có tài khoản? <span onclick="showLogin()">Đăng nhập</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== HOME SECTION ===== -->
+<div id="home" class="hidden">
+<header>
+  <div class="top">
+    <h1>📘 CORE ENGLISH ROADMAP – Ms. Thu Nguyễn</h1>
+    <div class="user-nav">
+      <button class="btn-reset-test" onclick="resetProgress()">⚡ Reset Tiến Độ</button>
+      <button class="btn-logout" onclick="logout()">Đăng xuất</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="welcome-banner">
+    <h2>Mục tiêu học tập của bạn 🎯</h2>
+    <p>Hãy hoàn thành từng bài học để mở khóa bài học tiếp theo. Chúc bạn học tập hiệu quả!</p>
+  </div>
+
+  <!-- PHONICS SECTION -->
+  <div class="section">
+    <h2 class="section-title">🔤 Phần 1: Phonics Cơ Bản</h2>
+    <div class="grid">
+      <a href="Phonics.html" class="lesson-card unlocked">
+        <div class="title">Luyện Phát Âm Phonics <span>🗣️</span></div>
+        <div class="status-badge">Đang mở</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- LESSONS SECTION -->
+  <div class="section">
+    <h2 class="section-title">📖 Phần 2: Lessons Luyện Tập</h2>
+    <div class="grid" id="lessonsGrid">
+      <!-- Các thẻ Lesson 1 -> 15 sẽ được JS render và kiểm tra khóa/mở tự động -->
+    </div>
+  </div>
+</main>
+
+<footer>© Ms. Thu Nguyễn – English for Beginners - CONTACT:0942642312</footer>
+</div>
+
+<script>
+const ADMIN_PIN = "213617";
+const TOTAL_LESSONS = 15;
+
+function showRegister(){ loginBox.classList.add("hidden"); registerBox.classList.remove("hidden"); }
+function showLogin(){ registerBox.classList.add("hidden"); loginBox.classList.remove("hidden"); }
+
+function register(){
+  if(regPin.value !== ADMIN_PIN){ alert("Sai mã PIN quản trị!"); return; }
+  if(regPass.value !== regPass2.value){ alert("Mật khẩu không khớp!"); return; }
+  if(!regEmail.value){ alert("Vui lòng nhập Email!"); return; }
+  
+  localStorage.setItem("email", regEmail.value);
+  localStorage.setItem("pass", regPass.value);
+  alert("Đăng ký thành công!");
+  showLogin();
+}
+
+function login(){
+  if(loginEmail.value === localStorage.getItem("email") && loginPass.value === localStorage.getItem("pass")){
+    localStorage.setItem("logged", "1");
+    showHome();
+  } else {
+    alert("Sai email hoặc mật khẩu!");
+  }
+}
+
+function logout(){
+  localStorage.removeItem("logged");
+  location.reload();
+}
+
+function showHome(){
+  auth.classList.add("hidden");
+  home.classList.remove("hidden");
+  renderLessons();
+}
+
+// Hàm khởi tạo vàRender danh sách bài học dựa trên tiến độ lưu trữ
+function renderLessons() {
+  const container = document.getElementById("lessonsGrid");
+  container.innerHTML = "";
+
+  // Kiểm tra điều kiện bài Phonics hoàn thành chưa
+  // (Nếu localStorage 'phonics_completed' === 'true' hoặc 'lesson_0_completed' === 'true' thì Lesson 1 được mở)
+  const isPhonicsDone = localStorage.getItem("phonics_completed") === "true";
+
+  for (let i = 1; i <= TOTAL_LESSONS; i++) {
+    let isUnlocked = false;
+
+    if (i === 1) {
+      // Lesson 1 mở khi hoàn thành Phonics
+      isUnlocked = isPhonicsDone;
+    } else {
+      // Lesson N mở khi Lesson (N-1) hoàn thành
+      const prevLessonKey = `lesson${i - 1}_completed`;
+      isUnlocked = localStorage.getItem(prevLessonKey) === "true";
+    }
+
+    const card = document.createElement("a");
+    if (isUnlocked) {
+      card.href = `Lesson${i}.html`;
+      card.className = "lesson-card unlocked";
+      card.innerHTML = `
+        <div class="title">Lesson ${i} <span>📖</span></div>
+        <div class="status-badge">Sẵn sàng học</div>
+      `;
+    } else {
+      card.className = "lesson-card locked";
+      card.onclick = (e) => {
+        e.preventDefault();
+        alert(`🔒 Bài Lesson ${i} đang bị khóa!\n\nBạn cần hoàn thành bài học trước đó để mở khóa bài học này.`);
+      };
+      card.innerHTML = `
+        <div class="title">Lesson ${i} <span>🔒</span></div>
+        <div class="status-badge">Đang khóa</div>
+      `;
+    }
+
+    container.appendChild(card);
+  }
+}
+
+// Nút reset/test nhanh dành cho Giáo viên / Admin
+function resetProgress() {
+  if (confirm("Bạn có muốn reset lại toàn bộ tiến độ học (Khóa tất cả các bài trừ Phonics) để kiểm tra lại không?")) {
+    localStorage.removeItem("phonics_completed");
+    for (let i = 1; i <= TOTAL_LESSONS; i++) {
+      localStorage.removeItem(`lesson${i}_completed`);
+    }
+    renderLessons();
+    alert("Đã reset tiến độ!");
+  }
+}
+
+// Tự động chuyển sang Home nếu đã đăng nhập trước đó
+if(localStorage.getItem("logged") === "1"){
+  showHome();
+}
+// Tự động kiểm tra tiến độ mỗi khi trang chủ được load / quay trở lại
+window.addEventListener('pageshow', function() {
+    if(localStorage.getItem("logged") === "1"){
+        showHome(); // Hàm này sẽ gọi renderLessons() để vẽ lại danh sách bài tập đã mở khóa
+    }
+});
+</script>
+
+</body>
+</html>
