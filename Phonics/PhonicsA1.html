@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phonics A1 – Luyện Phát Âm Cơ Bản</title>
+<style>
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f8fb;color:#222;padding-top:120px;}
+header{background:#1e3a8a;color:#fff;padding:16px 24px;position:fixed;top:0;left:0;right:0;z-index:900;}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.logo{font-size:22px;font-weight:bold}
+nav a{color:#fff;text-decoration:none;margin-left:10px;padding:8px 14px;border-radius:8px;background:rgba(255,255,255,.15)}
+nav a:hover{background:#fff;color:#1e3a8a}
+
+/* ===== THANH TIẾN ĐỘ (PROGRESS BAR) ===== */
+.progress-container {
+  position: fixed;
+  top: 68px;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 10px 24px;
+  z-index: 899;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1100px;
+  margin: 0 auto 6px auto;
+  font-size: 13px;
+  font-weight: bold;
+  color: #1e3a8a;
+}
+.progress-track {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #2563eb, #10b981);
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
+
+main{max-width:1100px;margin:auto;padding:20px}
+.card{background:#fff;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+h2{color:#1e3a8a;border-left:5px solid #1e3a8a;padding-left:10px}
+table{width:100%;border-collapse:collapse}
+th{background:#1e3a8a;color:#fff;padding:10px}
+td{border:1px solid #ddd;padding:10px}
+.audio{display:inline-flex;align-items:center;gap:4px;margin:3px;padding:6px 12px;background:#e8f0ff;border-radius:20px;cursor:pointer}
+.audio:hover{background:#1e3a8a;color:#fff}
+button{padding:8px 14px;border:none;border-radius:8px;background:#1e3a8a;color:#fff;cursor:pointer}
+footer{text-align:center;color:#666;padding:20px}
+
+.phonics-table{width:100%;border-collapse:collapse;margin-top:15px;font-size:15px;}
+.phonics-table th{background:#1e3a8a;color:#fff;padding:12px;text-align:left;}
+.phonics-table td{border:1px solid #e5e7eb;padding:12px;vertical-align:middle;}
+.phonics-table tr:nth-child(even){background:#f8fbff;}
+.phonics-table tr:hover{background:#eef5ff;}
+
+.audio-word{display:inline-flex;align-items:center;gap:4px;margin:4px;padding:6px 10px;background:#e8f0ff;border-radius:20px;color:#1e3a8a;font-weight:600;cursor:pointer;transition:.25s;}
+.audio-word:hover{background:#1e3a8a;color:#fff;transform:translateY(-2px);}
+
+.practice-table{width:100%;border-collapse:collapse;margin-top:15px;}
+.practice-table th{background:#1e3a8a;color:white;padding:12px;}
+.practice-table td{padding:12px;border:1px solid #e5e7eb;vertical-align:middle;}
+.practice-table tr:nth-child(even){background:#f8fbff;}
+
+.speak-btn{background:#2563eb;color:white;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:16px;transition:.25s;}
+.speak-btn:hover{background:#1d4ed8;transform:scale(1.05);}
+
+.practice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:25px;margin-top:20px;}
+.practice-item{background:white;border-radius:18px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.12);transition:.3s;text-align:center;padding-bottom:20px;}
+.practice-item:hover{transform:translateY(-8px);}
+.practice-item img{width:100%;height:260px;object-fit:cover;}
+.practice-item p{margin:12px 20px;font-size:18px;line-height:1.6;}
+.practice-item p:nth-child(3){font-style:italic;color:#666;font-size:16px;}
+
+/* ===== COMPONENT GHI ÂM (RECORDING CONTAINER) ===== */
+.audio-group-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 4px;
+  vertical-align: middle;
+  flex-wrap: wrap;
+}
+
+.rec-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: 0.2s;
+}
+.rec-btn:hover { background: #b91c1c; }
+.rec-btn.recording {
+  background: #ef4444;
+  animation: pulse 1s infinite;
+}
+
+.timer-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  border: 2px solid #ef4444;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.play-rec-btn {
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.play-rec-btn:hover { background: #15803d; }
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* ===== POPUP CONGRATULATIONS ===== */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6); display: flex; justify-content: center;
+  align-items: center; z-index: 1000;
+}
+.modal-content {
+  background: #fff; padding: 30px; border-radius: 16px;
+  text-align: center; max-width: 480px; width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25); animation: popIn 0.3s ease;
+  line-height: 1.6;
+}
+.modal-content h3 { color: #1e3a8a; margin-top: 0; font-size: 24px; }
+.modal-content p { color: #374151; font-size: 15px; margin: 10px 0; }
+.modal-hr { border: 0; height: 1px; background: #e5e7eb; margin: 15px 0; }
+.modal-btn-group { display: flex; gap: 12px; justify-content: center; margin-top: 25px; }
+.modal-btn {
+  padding: 12px 20px; border: none; border-radius: 8px;
+  font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px;
+}
+.btn-retry { background: #e5e7eb; color: #374151; }
+.btn-retry:hover { background: #d1d5db; }
+.btn-next { background: #1e3a8a; color: #fff; }
+.btn-next:hover { background: #1d4ed8; }
+.hidden { display: none !important; }
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top">
+    <div class="logo">📘 Phonics A1 – Luyện Phát Âm Cơ Bản</div>
+    <nav>
+      <a href="../Phonics.html">📚 Phonics</a>
+      <a href="../Home.html">🏠 Trang chủ</a>
+    </nav>
+  </div>
+</header>
+
+<!-- THANH TIẾN ĐỘ HOÀN THÀNH BÀI HỌC -->
+<div class="progress-container">
+  <div class="progress-info">
+    <span>📊 TIẾN ĐỘ HOÀN THÀNH: <span id="progressText">0%</span></span>
+    <span><span id="completedCount">0</span> / <span id="totalCount">0</span> Mục đã ghi âm</span>
+  </div>
+  <div class="progress-track">
+    <div id="progressBar" class="progress-bar"></div>
+  </div>
+</div>
+
+<main>
+  <div class="card">
+    <h2>📘 TỔNG QUAN PHÁT ÂM TIẾNG ANH</h2>
+    <p><b>🅰️ A. BẢNG CHỮ CÁI TIẾNG ANH</b></p>
+    <p>Từ ngữ trong tiếng Anh cũng giống như tiếng Việt, đều được cấu tạo từ hai thành phần chính:</p>
+    <ul>
+      <li>Nguyên âm (vowel)</li>
+      <li>Phụ âm (consonant)</li>
+    </ul>
+    <p><b>5 nguyên âm:</b> A, E, I, O, U</p>
+    <p><b>21 phụ âm:</b> các chữ cái còn lại.</p>
+    <p><b>Ví dụ:</b> What's your name? – My name is LOAN. Can you spell your name? – It's L-O-A-N.</p>
+    <p>Biết tên chữ cái giúp đánh vần; biết âm chữ cái giúp đọc đúng từ. Phonics giúp học phát âm từ gốc.</p>
+  </div>
+
+  <div class="card">
+    <h2>🔤 PHỤ ÂM TRONG TIẾNG ANH</h2>
+    <table>
+      <tr><th>Chữ cái</th><th>Ví dụ (nhấn để nghe & ghi âm)</th></tr>
+      <tr><td>b, bb</td><td><span class="audio" onclick="speak('big')">🔊 big</span><span class="audio" onclick="speak('rubber')">🔊 rubber</span></td></tr>
+      <tr><td>d, dd</td><td><span class="audio" onclick="speak('dog')">🔊 dog</span><span class="audio" onclick="speak('daddy')">🔊 daddy</span></td></tr>
+      <tr><td>f, ph</td><td><span class="audio" onclick="speak('fan')">🔊 fan</span><span class="audio" onclick="speak('photo')">🔊 photo</span></td></tr>
+      <tr><td>g, gg</td><td><span class="audio" onclick="speak('go')">🔊 go</span><span class="audio" onclick="speak('egg')">🔊 egg</span></td></tr>
+      <tr><td>h</td><td><span class="audio" onclick="speak('hat')">🔊 hat</span><span class="audio" onclick="speak('home')">🔊 home</span></td></tr>
+      <tr><td>j, ge</td><td><span class="audio" onclick="speak('jam')">🔊 jam</span><span class="audio" onclick="speak('giraffe')">🔊 giraffe</span></td></tr>
+      <tr><td>k,c,ck</td><td><span class="audio" onclick="speak('cat')">🔊 cat</span><span class="audio" onclick="speak('kite')">🔊 kite</span><span class="audio" onclick="speak('back')">🔊 back</span></td></tr>
+      <tr><td>l,ll</td><td><span class="audio" onclick="speak('love')">🔊 love</span><span class="audio" onclick="speak('live')">🔊 live</span></td></tr>
+      <tr><td>m,mm</td><td><span class="audio" onclick="speak('man')">🔊 man</span><span class="audio" onclick="speak('summer')">🔊 summer</span></td></tr>
+      <tr><td>n,nn</td><td><span class="audio" onclick="speak('no')">🔊 no</span><span class="audio" onclick="speak('dinner')">🔊 dinner</span></td></tr>
+      <tr><td>p,pp</td><td><span class="audio" onclick="speak('pen')">🔊 pen</span><span class="audio" onclick="speak('apple')">🔊 apple</span></td></tr>
+      <tr><td>r,rr</td><td><span class="audio" onclick="speak('red')">🔊 red</span><span class="audio" onclick="speak('carrot')">🔊 carrot</span></td></tr>
+      <tr><td>s,ss</td><td><span class="audio" onclick="speak('sun')">🔊 sun</span><span class="audio" onclick="speak('dress')">🔊 dress</span></td></tr>
+      <tr><td>t,tt</td><td><span class="audio" onclick="speak('top')">🔊 top</span><span class="audio" onclick="speak('butter')">🔊 butter</span></td></tr>
+      <tr><td>v</td><td><span class="audio" onclick="speak('van')">🔊 van</span><span class="audio" onclick="speak('love')">🔊 love</span></td></tr>
+      <tr><td>w,wh</td><td><span class="audio" onclick="speak('win')">🔊 win</span><span class="audio" onclick="speak('water')">🔊 water</span><span class="audio" onclick="speak('what')">🔊 what</span></td></tr>
+      <tr><td>y</td><td><span class="audio" onclick="speak('yes')">🔊 yes</span><span class="audio" onclick="speak('yellow')">🔊 yellow</span></td></tr>
+      <tr><td>z,s</td><td><span class="audio" onclick="speak('zoo')">🔊 zoo</span><span class="audio" onclick="speak('nose')">🔊 nose</span></td></tr>
+      <tr><td>ch</td><td><span class="audio" onclick="speak('chicken')">🔊 chicken</span><span class="audio" onclick="speak('chair')">🔊 chair</span></td></tr>
+      <tr><td>sh</td><td><span class="audio" onclick="speak('she')">🔊 she</span><span class="audio" onclick="speak('shoe')">🔊 shoe</span></td></tr>
+      <tr><td>ng</td><td><span class="audio" onclick="speak('sing')">🔊 sing</span><span class="audio" onclick="speak('king')">🔊 king</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>⭐ CÁC PHỤ ÂM ĐẶC BIỆT TRONG TIẾNG ANH</h2>
+    <p>Ngoài các âm quen thuộc, tiếng Anh còn có một số quy tắc phát âm đặc biệt. Hãy ghi nhớ các quy tắc dưới đây và nhấn vào từng từ để nghe cách phát âm.</p>
+    <table class="phonics-table">
+      <thead><tr><th width="16%">Tổ hợp</th><th width="18%">Quy tắc</th><th width="42%">Ví dụ</th><th>Ghi nhớ</th></tr></thead>
+      <tbody>
+        <tr><td><b>Hard C</b></td><td>C + a, o, u → /k/</td><td><span class="audio-word" onclick="speak('cat')">🔊 cat</span><span class="audio-word" onclick="speak('cup')">🔊 cup</span><span class="audio-word" onclick="speak('car')">🔊 car</span></td><td>C đi với a, o, u đọc là /k/.</td></tr>
+        <tr><td><b>Soft C</b></td><td>C + e, i, y → /s/</td><td><span class="audio-word" onclick="speak('city')">🔊 city</span><span class="audio-word" onclick="speak('pencil')">🔊 pencil</span><span class="audio-word" onclick="speak('ice')">🔊 ice</span><span class="audio-word" onclick="speak('voice')">🔊 voice</span></td><td>C đi với e, i, y đọc như âm /s/.</td></tr>
+        <tr><td><b>Hard G</b></td><td>G + a, o, u → /g/</td><td><span class="audio-word" onclick="speak('go')">🔊 go</span><span class="audio-word" onclick="speak('game')">🔊 game</span><span class="audio-word" onclick="speak('garden')">🔊 garden</span></td><td>G đi với a, o, u đọc là /g/.</td></tr>
+        <tr><td><b>Soft G</b></td><td>G + e, i, y → /dʒ/</td><td><span class="audio-word" onclick="speak('giant')">🔊 giant</span><span class="audio-word" onclick="speak('gym')">🔊 gym</span><span class="audio-word" onclick="speak('gentle')">🔊 gentle</span></td><td>G đi với e, i, y đọc như âm /dʒ/.</td></tr>
+        <tr><td><b>PH</b></td><td>PH → /f/</td><td><span class="audio-word" onclick="speak('phone')">🔊 phone</span><span class="audio-word" onclick="speak('photo')">🔊 photo</span><span class="audio-word" onclick="speak('elephant')">🔊 elephant</span></td><td>PH luôn phát âm như F.</td></tr>
+        <tr><td><b>TH</b><br>(voiceless)</td><td>/θ/</td><td><span class="audio-word" onclick="speak('think')">🔊 think</span><span class="audio-word" onclick="speak('thank')">🔊 thank</span><span class="audio-word" onclick="speak('thin')">🔊 thin</span></td><td>Cắn nhẹ đầu lưỡi và thổi hơi.</td></tr>
+        <tr><td><b>TH</b><br>(voiced)</td><td>/ð/</td><td><span class="audio-word" onclick="speak('this')">🔊 this</span><span class="audio-word" onclick="speak('that')">🔊 that</span><span class="audio-word" onclick="speak('mother')">🔊 mother</span></td><td>Đầu lưỡi giữa răng, cổ họng rung nhẹ.</td></tr>
+        <tr><td><b>KN</b></td><td>K câm</td><td><span class="audio-word" onclick="speak('know')">🔊 know</span><span class="audio-word" onclick="speak('knife')">🔊 knife</span><span class="audio-word" onclick="speak('knee')">🔊 knee</span></td><td>Không đọc K.</td></tr>
+        <tr><td><b>GN</b></td><td>G câm</td><td><span class="audio-word" onclick="speak('sign')">🔊 sign</span></td><td>Không đọc G.</td></tr>
+        <tr><td><b>WR</b></td><td>W câm</td><td><span class="audio-word" onclick="speak('write')">🔊 write</span><span class="audio-word" onclick="speak('wrong')">🔊 wrong</span><span class="audio-word" onclick="speak('wrist')">🔊 wrist</span></td><td>Không đọc W.</td></tr>
+        <tr><td><b>WH</b></td><td>Đọc /w/</td><td><span class="audio-word" onclick="speak('what')">🔊 what</span><span class="audio-word" onclick="speak('where')">🔊 where</span><span class="audio-word" onclick="speak('why')">🔊 why</span></td><td>Tròn môi khi phát âm.</td></tr>
+        <tr><td><b>Ngoại lệ</b></td><td>WH → H</td><td><span class="audio-word" onclick="speak('who')">🔊 who</span></td><td>Who đọc /huː/, không đọc /w/.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🎧 Luyện Tập Phát Âm</h2>
+    <p>Nhấn vào nút <b>🔊</b> để nghe câu mẫu bằng giọng nữ tiếng Anh.</p>
+    <table class="practice-table">
+      <tr><th width="30%">Chủ điểm</th><th>Câu luyện tập</th><th width="120">Nghe</th></tr>
+      <tr><td><b>Hard C vs Soft C</b></td><td>The cat is in the city.</td><td><button class="speak-btn" onclick="speakSentence('The cat is in the city.')">🔊</button></td></tr>
+      <tr><td><b>Hard G vs Soft G</b></td><td>The gentlemen like to go to the gym.</td><td><button class="speak-btn" onclick="speakSentence('The gentlemen like to go to the gym.')">🔊</button></td></tr>
+      <tr><td><b>PH vs F</b></td><td>Find your phone and take a photo.</td><td><button class="speak-btn" onclick="speakSentence('Find your phone and take a photo.')">🔊</button></td></tr>
+      <tr><td><b>TH</b></td><td>Think before you say this.</td><td><button class="speak-btn" onclick="speakSentence('Think before you say this.')">🔊</button></td></tr>
+      <tr><td><b>KN / GN / WR</b></td><td>I know how to write a sign.</td><td><button class="speak-btn" onclick="speakSentence('I know how to write a sign.')">🔊</button></td></tr>
+      <tr><td><b>WH</b></td><td>What do you want and where is it?</td><td><button class="speak-btn" onclick="speakSentence('What do you want and where is it?')">🔊</button></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🔠 NGUYÊN ÂM VÀ QUY TẮC ÂM NGẮN</h2>
+    <h3>1️⃣ PHÂN BIỆT 5 NGUYÊN ÂM TRONG TIẾNG ANH</h3>
+    <p>Trong tiếng Anh có <b>5 nguyên âm</b> (A, E, I, O, U). Mỗi nguyên âm có <b>tên chữ cái (Letter Name)</b> và <b>âm phát âm (Sound)</b>. Khi mới học Phonics, học sinh cần phân biệt rõ hai khái niệm này.</p>
+    <table class="phonics-table">
+      <tr><th width="12%">Chữ cái</th><th width="18%">Tên chữ (Letter Name)</th><th width="18%">Âm ngắn</th><th>Cách đọc đơn giản</th><th width="180">Ví dụ</th></tr>
+      <tr><td><b>A</b></td><td>"ây"</td><td>/æ/</td><td>Giống âm <b>a</b> trong <i>cat</i></td><td><span class="audio-word" onclick="speak('cat')">🔊 cat</span><span class="audio-word" onclick="speak('apple')">🔊 apple</span></td></tr>
+      <tr><td><b>E</b></td><td>"i"</td><td>/e/</td><td>Giống âm <b>e</b> trong <i>pen</i></td><td><span class="audio-word" onclick="speak('pen')">🔊 pen</span><span class="audio-word" onclick="speak('bed')">🔊 bed</span></td></tr>
+      <tr><td><b>I</b></td><td>"ai"</td><td>/ɪ/</td><td>Giống âm <b>i</b> trong <i>sit</i></td><td><span class="audio-word" onclick="speak('sit')">🔊 sit</span><span class="audio-word" onclick="speak('fish')">🔊 fish</span></td></tr>
+      <tr><td><b>O</b></td><td>"âu"</td><td>/ɒ/</td><td>Giống âm <b>o</b> trong <i>hot</i></td><td><span class="audio-word" onclick="speak('hot')">🔊 hot</span><span class="audio-word" onclick="speak('dog')">🔊 dog</span></td></tr>
+      <tr><td><b>U</b></td><td>"ju" hoặc "u"</td><td>/ʌ/</td><td>Giống âm <b>â</b> trong <i>sun</i></td><td><span class="audio-word" onclick="speak('sun')">🔊 sun</span><span class="audio-word" onclick="speak('bus')">🔊 bus</span></td></tr>
+    </table>
+    <br>
+    <h3>2️⃣ QUY TẮC 1 – ÂM NGẮN (Short Vowel Sound)</h3>
+    <p><b>📖 Quy tắc:</b></p>
+    <div style="background:#eef6ff;border-left:6px solid #2563eb;padding:15px;border-radius:10px;line-height:1.8;margin-bottom:20px;">
+      Khi một nguyên âm <b>A, E, I, O hoặc U</b> đứng trong <b>từ chỉ có một âm tiết (one-syllable word)</b> và được theo sau bởi <b>một hoặc nhiều phụ âm</b>, thì nguyên âm đó thường được phát âm <b>âm ngắn (Short Vowel Sound)</b>.
+    </div>
+    <div style="text-align:center;margin:25px 0;">
+      <img src="images/A1.png" alt="Quy tắc âm ngắn" style="max-width:100%;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.15);">
+      <p style="margin-top:10px;color:#555;font-style:italic;">Hình minh họa Quy tắc Âm ngắn (Short Vowel Rule)</p>
+    </div>
+    <table class="practice-table">
+      <tr><th>Nguyên âm</th><th>Ví dụ</th><th width="120">Nghe</th></tr>
+      <tr><td><b>/æ/</b></td><td>cat • map • pan • dad • bag</td><td><button class="speak-btn" onclick="speakSentence('Cat. Map. Pan. Dad. Bag.')">🔊</button></td></tr>
+      <tr><td><b>/e/</b></td><td>bed • pen • net • hen • web</td><td><button class="speak-btn" onclick="speakSentence('Bed. Pen. Net. Hen. Web.')">🔊</button></td></tr>
+      <tr><td><b>/ɪ/</b></td><td>sit • kid • pin • zip • lip</td><td><button class="speak-btn" onclick="speakSentence('Sit. Kid. Pin. Zip. Lip.')">🔊</button></td></tr>
+      <tr><td><b>/ɒ/</b></td><td>hot • dog • mop • fox • log</td><td><button class="speak-btn" onclick="speakSentence('Hot. Dog. Mop. Fox. Log.')">🔊</button></td></tr>
+      <tr><td><b>/ʌ/</b></td><td>sun • bus • hug • cut • cup</td><td><button class="speak-btn" onclick="speakSentence('Sun. Bus. Hug. Cut. Cup.')">🔊</button></td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>🎤 Speaking Practice 1</h2>
+    <h3 style="color:#2563eb;">❓ What do you usually do in your free time?</h3>
+    <div class="practice-grid">
+      <div class="practice-item">
+        <img src="images/A1a.png">
+        <p><b>In my spare time, I get a pen and draw a big landscape.</b></p>
+        <p>Tôi thường dùng cây bút bi vẽ một bức tranh phong cảnh rộng lớn vào thời gian rảnh.</p>
+        <button class="speak-btn" onclick="speakSentence('In my spare time, I get a pen and draw a big landscape.')">🔊 Listen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🎤 Speaking Practice 2</h2>
+    <h3 style="color:#2563eb;">❓ What do you usually do in your free time?</h3>
+    <div class="practice-grid">
+      <div class="practice-item">
+        <img src="images/A1b.png">
+        <p><b>During my time off, I often jog with my dog in the park, and I sit on a rock to rest.</b></p>
+        <p>Vào thời gian rảnh của mình, tôi thường chạy bộ với chú chó của tôi trong công viên và ngồi nghỉ ngơi trên đá.</p>
+        <button class="speak-btn" onclick="speakSentence('During my time off, I often jog with my dog in the park, and I sit on a rock to rest.')">🔊 Listen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🎤 Speaking Practice 3</h2>
+    <h3 style="color:#2563eb;">❓ What do you usually do in your free time?</h3>
+    <div class="practice-grid">
+      <div class="practice-item">
+        <img src="images/A1c.png">
+        <p><b>In my leisure time, I often shop for fun, and I pick the things I like.</b></p>
+        <p>Tôi thường đi mua sắm để giải trí và chọn mua những món tôi thích .</p>
+        <button class="speak-btn" onclick="speakSentence('In my leisure time, I often shop for fun, and I pick the things I like.')">🔊 Listen</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<!-- POPUP CONGRATULATIONS -->
+<div id="congratsModal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <h3>🎉 Congratulations!</h3>
+    <p>You have successfully completed this lesson.</p>
+    <p>Keep practicing regularly and confidently before moving on to the next lesson.</p>
+    <hr class="modal-hr">
+    <p><b>🎉 Chúc mừng!</b></p>
+    <p>Bạn đã hoàn thành bài luyện tập Phonics A1.</p>
+    <p>Hãy luyện tập thật chăm chỉ và tự tin trước khi chuyển sang bài học tiếp theo.</p>
+    
+    <div class="modal-btn-group">
+      <button class="modal-btn btn-retry" onclick="retryLesson()">LUYỆN LẠI</button>
+      <button class="modal-btn btn-next" onclick="nextLesson()">HỌC BÀI TIẾP THEO</button>
+    </div>
+  </div>
+</div>
+
+<footer>© Ms. Thu Nguyễn – English for Beginners</footer>
+
+<script>
+/* ===== GIỌNG ĐỌC MẪU (TTS) ===== */
+let femaleVoice = null;
+function loadVoices(){
+  const voices = speechSynthesis.getVoices();
+  femaleVoice = voices.find(v=>v.name.includes("Google US English")) ||
+                voices.find(v=>v.name.includes("Microsoft Aria")) ||
+                voices.find(v=>v.name.includes("Samantha")) ||
+                voices.find(v=>v.name.includes("Female")) ||
+                voices.find(v=>v.lang==="en-US") ||
+                voices.find(v=>v.lang.startsWith("en"));
+}
+loadVoices();
+if(speechSynthesis.onvoiceschanged !== undefined){ speechSynthesis.onvoiceschanged = loadVoices; }
+
+function speak(text){
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = "en-US";
+  utter.rate = 0.85;
+  utter.pitch = 1.15;
+  if(femaleVoice){ utter.voice = femaleVoice; }
+  speechSynthesis.speak(utter);
+}
+
+function speakSentence(text){
+  speechSynthesis.cancel();
+  const msg = new SpeechSynthesisUtterance(text);
+  msg.lang = "en-US";
+  msg.rate = 0.85;
+  msg.pitch = 1.2;
+  if(femaleVoice){ msg.voice = femaleVoice; }
+  speechSynthesis.speak(msg);
+}
+
+/* ===== HỆ THỐNG GHI ÂM VÀ BỘ ĐẾM 60S ===== */
+let mediaRecorder = null;
+let audioChunks = [];
+let activeTimer = null;
+let recordedStatus = {}; // Lưu trạng thái hoàn thành ghi âm từng nút
+
+document.addEventListener("DOMContentLoaded", function() {
+  initRecorderUI();
+});
+
+function initRecorderUI() {
+  // Tìm tất cả các nút nghe có sẵn
+  const audioElements = document.querySelectorAll(".audio, .audio-word, .speak-btn");
+  
+  audioElements.forEach((el, index) => {
+    // Bọc trong container chung
+    const wrapper = document.createElement("div");
+    wrapper.className = "audio-group-wrapper";
+    
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+
+    // Tạo nút Record & Timer 60s
+    const recBtn = document.createElement("button");
+    recBtn.className = "rec-btn";
+    recBtn.id = `rec-btn-${index}`;
+    recBtn.innerHTML = `🎙️ <span class="timer-circle" id="timer-${index}">60</span>`;
+    recBtn.onclick = () => toggleRecording(index);
+    
+    // Nút Nghe lại (Mặc định ẩn)
+    const playBtn = document.createElement("button");
+    playBtn.className = "play-rec-btn hidden";
+    playBtn.id = `play-btn-${index}`;
+    playBtn.innerHTML = `▶ Nghe lại`;
+
+    wrapper.appendChild(recBtn);
+    wrapper.appendChild(playBtn);
+  });
+
+  // Cập nhật tổng số nút ghi âm lên thanh tiến độ
+  const total = document.querySelectorAll(".audio-group-wrapper").length;
+  document.getElementById("totalCount").innerText = total;
+  updateProgressBar();
+}
+
+async function toggleRecording(index) {
+  const recBtn = document.getElementById(`rec-btn-${index}`);
+  const timerEl = document.getElementById(`timer-${index}`);
+  const playBtn = document.getElementById(`play-btn-${index}`);
+
+  // Nếu đang ghi âm ở nút này -> Bấm dừng
+  if (recBtn.classList.contains("recording")) {
+    stopRecording(index);
+    return;
+  }
+
+  // Xin quyền Microphone
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    
+    // Dừng bất kỳ hoạt động ghi âm trước đó nếu có
+    if(mediaRecorder && mediaRecorder.state === "recording") {
+      mediaRecorder.stop();
+    }
+    clearInterval(activeTimer);
+
+    audioChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    
+    mediaRecorder.ondataavailable = e => {
+      if (e.data.size > 0) audioChunks.push(e.data);
+    };
+
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/mp3' });
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      playBtn.onclick = () => {
+        const audio = new Audio(audioUrl);
+        audio.play();
+      };
+      playBtn.classList.remove("hidden");
+
+      // Đánh dấu đã ghi âm xong nút này
+      recordedStatus[index] = true;
+      updateProgressBar();
+      checkAllCompleted();
+    };
+
+    mediaRecorder.start();
+    recBtn.classList.add("recording");
+
+    // Chạy đếm ngược 60 giây
+    let timeLeft = 60;
+    timerEl.innerText = timeLeft;
+
+    activeTimer = setInterval(() => {
+      timeLeft--;
+      timerEl.innerText = timeLeft;
+      if (timeLeft <= 0) {
+        stopRecording(index);
+      }
+    }, 1000);
+
+  } catch (err) {
+    alert("Không thể truy cập Microphone! Vui lòng cấp quyền micro cho trình duyệt.");
+  }
+}
+
+function stopRecording(index) {
+  const recBtn = document.getElementById(`rec-btn-${index}`);
+  const timerEl = document.getElementById(`timer-${index}`);
+  
+  if (mediaRecorder && mediaRecorder.state === "recording") {
+    mediaRecorder.stop();
+    mediaRecorder.stream.getTracks().forEach(track => track.stop());
+  }
+  clearInterval(activeTimer);
+  
+  recBtn.classList.remove("recording");
+  timerEl.innerText = "60";
+}
+
+/* ===== CẬP NHẬT THANH TIẾN ĐỘ ===== */
+function updateProgressBar() {
+  const totalBtns = document.querySelectorAll(".audio-group-wrapper").length;
+  const completedCount = Object.keys(recordedStatus).length;
+  const percentage = totalBtns > 0 ? Math.round((completedCount / totalBtns) * 100) : 0;
+
+  document.getElementById("completedCount").innerText = completedCount;
+  document.getElementById("progressText").innerText = `${percentage}%`;
+  document.getElementById("progressBar").style.width = `${percentage}%`;
+}
+
+/* ===== KIỂM TRA HOÀN THÀNH TẤT CẢ & HIỆN POPUP ===== */
+function checkAllCompleted() {
+  const totalBtns = document.querySelectorAll(".audio-group-wrapper").length;
+  const completedCount = Object.keys(recordedStatus).length;
+
+  if (completedCount >= totalBtns) {
+    setTimeout(() => {
+      triggerCongrats();
+    }, 500);
+  }
+}
+
+/* ===== MỞ POPUP & LƯU TIẾN ĐỘ ===== */
+function triggerCongrats() {
+  // Lưu tiến độ hoàn thành bài A1 (ID = 1) vào localStorage
+  let completedLessons = JSON.parse(localStorage.getItem("completedLessons")) || [];
+  if (!completedLessons.includes(1)) {
+    completedLessons.push(1);
+    localStorage.setItem("completedLessons", JSON.stringify(completedLessons));
+  }
+  
+  // Mở Popup
+  document.getElementById("congratsModal").classList.remove("hidden");
+}
+
+/* ===== XỬ LÝ NÚT POPUP ===== */
+function retryLesson() {
+  recordedStatus = {};
+  location.reload();
+}
+
+function nextLesson() {
+  localStorage.setItem("justFinishedLesson", 1);
+  location.href = "PhonicsA2.html"; // Chuyển sang bài tiếp theo Phonics A2
+}
+</script>
+</body>
+</html>
