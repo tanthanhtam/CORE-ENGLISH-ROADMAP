@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phonics A3 – Luyện Phát Âm Cơ Bản</title>
+<style>
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f8fb;color:#222}
+header{background:#1e3a8a;color:#fff;padding:16px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.logo{font-size:22px;font-weight:bold}
+nav a{color:#fff;text-decoration:none;margin-left:10px;padding:8px 14px;border-radius:8px;background:rgba(255,255,255,.15)}
+nav a:hover{background:#fff;color:#1e3a8a}
+
+/* Recording Progress Bar */
+.progress-box {
+    margin-top: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.progress-container {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #4ade80;
+    transition: width 0.4s ease;
+}
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #e0e7ff;
+}
+.btn-admin-test {
+    background: #f59e0b;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-admin-test:hover { background: #d97706; transform: scale(1.05); }
+
+main{max-width:1100px;margin:auto;padding:20px}
+.card{background:#fff;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+h2{color:#1e3a8a;border-left:5px solid #1e3a8a;padding-left:10px}
+table{width:100%;border-collapse:collapse}
+th{background:#1e3a8a;color:#fff;padding:10px}
+td{border:1px solid #ddd;padding:10px}
+button{padding:8px 14px;border:none;border-radius:8px;background:#1e3a8a;color:#fff;cursor:pointer;transition:.2s}
+button:hover{opacity:0.9;transform:scale(1.02)}
+footer{text-align:center;color:#666;padding:20px}
+
+.phonics-table{width:100%;border-collapse:collapse;margin-top:15px;font-size:15px;}
+.phonics-table th{background:#1e3a8a;color:#fff;padding:12px;text-align:left;}
+.phonics-table td{border:1px solid #e5e7eb;padding:12px;vertical-align:top;}
+.phonics-table tr:nth-child(even){background:#f8fbff;}
+.phonics-table tr:hover{background:#eef5ff;}
+
+.audio-word{
+    display:inline-block;
+    margin:4px;
+    padding:6px 10px;
+    background:#e8f0ff;
+    border-radius:20px;
+    color:#1e3a8a;
+    font-weight:600;
+    cursor:pointer;
+    transition:.25s;
+    user-select:none;
+}
+.audio-word:hover{
+    background:#1e3a8a;
+    color:#fff;
+    transform:translateY(-2px);
+}
+
+/* Practice Reading Table */
+.sentence-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #e2e8f0;
+}
+.sentence-row:last-child { border-bottom: none; }
+
+.num-badge {
+    background: #1e3a8a;
+    color: #fff;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+.num-badge:hover {
+    background: #2563eb;
+    transform: scale(1.1);
+}
+
+.sentence-content { flex-grow: 1; }
+.sentence-actions {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.btn-rec {
+    background: #ef4444;
+    font-size: 13px;
+    padding: 5px 10px;
+}
+.btn-rec.recording {
+    animation: pulse 1s infinite;
+    background: #dc2626;
+}
+.btn-play-rec {
+    background: #10b981;
+    font-size: 13px;
+    padding: 5px 10px;
+    display: none;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Full Width Image */
+.full-width-img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.15);
+    display: block;
+    cursor: zoom-in;
+}
+
+/* Lightbox Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    justify-content: center; align-items: center;
+}
+.modal-content { max-width: 95%; max-height: 95%; border-radius: 8px; }
+.modal-close {
+    position: absolute; top: 20px; right: 35px;
+    color: #fff; font-size: 40px; font-weight: bold; cursor: pointer;
+}
+
+/* Completion Popup Modal */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+.popup-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: popIn 0.3s ease;
+}
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+.popup-card h2 {
+    color: #16a34a;
+    border: none;
+    padding: 0;
+    margin-bottom: 10px;
+}
+.btn-next-page {
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+}
+.btn-next-page:hover {
+    background: #1d4ed8;
+}
+
+/* Test Section Style */
+.test-box {
+    display: none;
+    background: #f0fdf4;
+    border: 2px solid #22c55e;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+.test-question {
+    margin-bottom: 18px; padding: 14px;
+    background: #fff; border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-left: 4px solid #2563eb;
+}
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+.option-btn {
+    display: block;
+    padding: 10px 14px; background: #f1f5f9;
+    color: #1e293b; border-radius: 8px; cursor: pointer;
+    text-align: center; font-weight: 600; transition: 0.2s;
+    border: 1px solid #cbd5e1;
+}
+.option-btn:hover { background: #e2e8f0; }
+.option-btn.selected { background: #3b82f6 !important; color: #fff !important; border-color: #1d4ed8; }
+.option-btn.correct { background: #22c55e !important; color: #fff !important; border-color: #15803d; }
+.option-btn.wrong { background: #ef4444 !important; color: #fff !important; border-color: #b91c1c; }
+
+.test-result {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    display: none;
+}
+.test-result.success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.test-result.warning { background: #fef3c7; color: #92400e; border: 1px solid #fde047; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="top">
+    <div class="logo">📘 Phonics A3 – Luyện Phát Âm Cơ Bản</div>
+    <nav>
+        <a href="../Phonics.html">📚 Phonics</a>
+        <a href="../Home.html">🏠 Trang chủ</a>
+    </nav>
+</div>
+<div class="progress-box">
+    <div class="progress-info">
+        <span>🎙️ Tiến độ thu âm bài đọc: <strong id="progressText">0 / 11 câu (0%)</strong></span>
+        <button class="btn-admin-test" onclick="autoFillRecording()">⚡ Quick Complete (Test)</button>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+</div>
+</header>
+
+<main>
+<div class="card">
+    <h2>📘 A3 – CÁC QUY TẮC ĐẶC BIỆT TRONG PHÁT ÂM (3)</h2>
+    <h3 style="color:#c62828;">1. QUY TẮC 4 – ÂM ĐÔI (Diphthongs / Long Vowel Sounds)</h3>
+    <p>👉 Khi hai nguyên âm đi cùng nhau, chúng thường tạo thành một âm mới gọi là <b>Diphthong (Âm đôi)</b>. Hãy ghi nhớ các mẫu dưới đây.</p>
+
+    <!-- Hình phóng to sẵn bằng độ rộng khung nội dung -->
+    <div style="margin:25px 0;">
+        <img src="images/A3.png" alt="Quy tắc 4" class="full-width-img" onclick="openModal(this.src)">
+    </div>
+
+    <table class="phonics-table">
+        <tr>
+            <th width="18%">Mẫu</th>
+            <th width="18%">Âm</th>
+            <th>Ví dụ</th>
+        </tr>
+        <tr>
+            <td><b>AI – AY</b></td>
+            <td>/eɪ/</td>
+            <td>
+                <span class="audio-word" onclick="speak('aim')">🔊 aim</span>
+                <span class="audio-word" onclick="speak('rain')">🔊 rain</span>
+                <span class="audio-word" onclick="speak('wait')">🔊 wait</span>
+                <span class="audio-word" onclick="speak('play')">🔊 play</span>
+                <span class="audio-word" onclick="speak('day')">🔊 day</span>
+                <span class="audio-word" onclick="speak('pay')">🔊 pay</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>EA – EE – EY</b></td>
+            <td>/iː/</td>
+            <td>
+                <span class="audio-word" onclick="speak('eat')">🔊 eat</span>
+                <span class="audio-word" onclick="speak('sea')">🔊 sea</span>
+                <span class="audio-word" onclick="speak('team')">🔊 team</span>
+                <span class="audio-word" onclick="speak('see')">🔊 see</span>
+                <span class="audio-word" onclick="speak('cheap')">🔊 cheap</span>
+                <span class="audio-word" onclick="speak('steal')">🔊 steal</span>
+                <span class="audio-word" onclick="speak('money')">🔊 money</span>
+                <span class="audio-word" onclick="speak('need')">🔊 need</span>
+                <span class="audio-word" onclick="speak('people')">🔊 people</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>IE</b></td>
+            <td>/aɪ/</td>
+            <td>
+                <span class="audio-word" onclick="speak('tie')">🔊 tie</span>
+                <span class="audio-word" onclick="speak('pie')">🔊 pie</span>
+                <span class="audio-word" onclick="speak('die')">🔊 die</span>
+                <span class="audio-word" onclick="speak('lie')">🔊 lie</span>
+                <span class="audio-word" onclick="speak('fries')">🔊 fries</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>OA – OE</b></td>
+            <td>/oʊ/</td>
+            <td>
+                <span class="audio-word" onclick="speak('coat')">🔊 coat</span>
+                <span class="audio-word" onclick="speak('road')">🔊 road</span>
+                <span class="audio-word" onclick="speak('coach')">🔊 coach</span>
+                <span class="audio-word" onclick="speak('toe')">🔊 toe</span>
+                <span class="audio-word" onclick="speak('doe')">🔊 doe</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>UE – EU – EW</b></td>
+            <td>/juː/</td>
+            <td>
+                <span class="audio-word" onclick="speak('argue')">🔊 argue</span>
+                <span class="audio-word" onclick="speak('rescue')">🔊 rescue</span>
+                <span class="audio-word" onclick="speak('due')">🔊 due</span>
+                <span class="audio-word" onclick="speak('Europe')">🔊 Europe</span>
+                <span class="audio-word" onclick="speak('few')">🔊 few</span>
+                <span class="audio-word" onclick="speak('pew')">🔊 pew</span>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <div style="background:#eef6ff;border-left:6px solid #2563eb;padding:15px;border-radius:10px;">
+        <b>Lưu ý:</b> <b>money</b> và <b>people</b> là hai từ ngoại lệ cần ghi nhớ.
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎧 LUYỆN TẬP PHÁT ÂM & SHADOWING CÂU</h2>
+    <p>💡 <b>Hướng dẫn:</b> Bấm vào <b>số thứ tự [1], [2]...</b> để nghe câu chuẩn. Bấm nút <b>🎤 Thu âm</b> để thực hành đọc từng câu. Hoàn thành ghi âm đủ các câu để đạt 100% tiến độ!</p>
+
+    <!-- Hình phóng to sẵn bằng độ rộng khung nội dung -->
+    <div style="margin:20px 0;">
+        <img src="images/A3a.png" alt="Overpopulation" class="full-width-img" onclick="openModal(this.src)">
+    </div>
+
+    <h3 style="color:#2563eb;">📖 Topic: The disadvantages of overpopulation</h3>
+
+    <div style="overflow-x:auto;margin-top:15px;">
+        <table class="phonics-table">
+            <tr style="background:#1e3a8a;color:#fff;">
+                <th width="50%">🇬🇧 English (Nhấn số để nghe mẫu)</th>
+                <th width="50%">🇻🇳 Tiếng Việt</th>
+            </tr>
+            <tr>
+                <td>
+                    <!-- Câu 1 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('There are many disadvantages of overpopulation. Below are some reasons.')">1</div>
+                        <div class="sentence-content">
+                            <div>There are many disadvantages of overpopulation. Below are some reasons.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(1, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec1" onclick="playRecord(1)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 2 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('First, overpopulation will pollute the environment.')">2</div>
+                        <div class="sentence-content">
+                            <div><b>First,</b> overpopulation will pollute the environment.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(2, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec2" onclick="playRecord(2)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 3 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('People throw trash on the road and the air is full of smoke.')">3</div>
+                        <div class="sentence-content">
+                            <div>People throw trash on the <span class="audio-word" onclick="speak('road')">road</span> and the air is full of smoke.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(3, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec3" onclick="playRecord(3)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 4 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('On a rainy day, you cannot see the sky well.')">4</div>
+                        <div class="sentence-content">
+                            <div>On a rainy <span class="audio-word" onclick="speak('day')">day</span>, you cannot <span class="audio-word" onclick="speak('see')">see</span> the sky well.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(4, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec4" onclick="playRecord(4)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 5 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('Second, it will decrease the quality of life.')">5</div>
+                        <div class="sentence-content">
+                            <div><b>Second,</b> it will decrease the quality of life.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(5, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec5" onclick="playRecord(5)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 6 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('People must wait in long lines at the hospital and school.')">6</div>
+                        <div class="sentence-content">
+                            <div>People must <span class="audio-word" onclick="speak('wait')">wait</span> in long lines at the hospital and school.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(6, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec6" onclick="playRecord(6)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 7 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('Some families do not have enough money to pay for good food, so they eat cheap food like fries instead of healthy meals.')">7</div>
+                        <div class="sentence-content">
+                            <div>Some families do not have enough <span class="audio-word" onclick="speak('money')">money</span> to <span class="audio-word" onclick="speak('pay')">pay</span> for good food, so they eat <span class="audio-word" onclick="speak('cheap')">cheap</span> food like <span class="audio-word" onclick="speak('fries')">fries</span> instead of healthy meals.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(7, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec7" onclick="playRecord(7)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 8 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('Children don\'t have space to play, and some just sit inside all day.')">8</div>
+                        <div class="sentence-content">
+                            <div>Children don't have space to <span class="audio-word" onclick="speak('play')">play</span>, and some just sit inside all day.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(8, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec8" onclick="playRecord(8)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 9 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('Next, it will increase unemployment. There are too many people. It is hard to find work.')">9</div>
+                        <div class="sentence-content">
+                            <div><b>Next,</b> it will increase unemployment. There are too many people. It is hard to find work.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(9, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec9" onclick="playRecord(9)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 10 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('Some people may even lie or steal to get what they want.')">10</div>
+                        <div class="sentence-content">
+                            <div>Some people may even <span class="audio-word" onclick="speak('lie')">lie</span> or <span class="audio-word" onclick="speak('steal')">steal</span> to get what they want.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(10, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec10" onclick="playRecord(10)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Câu 11 -->
+                    <div class="sentence-row">
+                        <div class="num-badge" onclick="speakSentence('Lastly, it will be hard to relax or get help when you need it. That\'s why overpopulation is a big issue that we need to face.')">11</div>
+                        <div class="sentence-content">
+                            <div><b>Lastly,</b> it will be hard to relax or get help when you <span class="audio-word" onclick="speak('need')">need</span> it. That's why overpopulation is a big issue that we need to face.</div>
+                            <div class="sentence-actions">
+                                <button class="btn-rec" onclick="toggleRecord(11, this)">🎤 Thu âm</button>
+                                <button class="btn-play-rec" id="playRec11" onclick="playRecord(11)">▶ Nghe lại</button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <div style="line-height:2.4;">
+                        <p><b>[1]</b> Có nhiều bất lợi của tình trạng quá đông dân số. Dưới đây là một số lý do.</p>
+                        <p><b>[2]</b> Thứ nhất, dân số quá đông sẽ gây ô nhiễm môi trường.</p>
+                        <p><b>[3]</b> Người ta vứt rác ra đường và không khí thì đầy khói bụi.</p>
+                        <p><b>[4]</b> Vào những ngày mưa, bạn không thể nhìn thấy bầu trời rõ ràng.</p>
+                        <p><b>[5]</b> Thứ hai, điều này sẽ làm giảm chất lượng cuộc sống.</p>
+                        <p><b>[6]</b> Mọi người phải xếp hàng dài ở bệnh viện và trường học.</p>
+                        <p><b>[7]</b> Một số gia đình không có đủ tiền để mua thức ăn ngon nên họ ăn đồ ăn rẻ như khoai tây chiên thay vì những bữa ăn lành mạnh.</p>
+                        <p><b>[8]</b> Trẻ em không có không gian để vui chơi và một số em chỉ ngồi trong nhà cả ngày.</p>
+                        <p><b>[9]</b> Tiếp theo, nó sẽ làm tăng tỷ lệ thất nghiệp. Khi có quá nhiều người, việc tìm được công việc trở nên khó khăn.</p>
+                        <p><b>[10]</b> Một số người thậm chí có thể nói dối hoặc trộm cắp để có được thứ họ muốn.</p>
+                        <p><b>[11]</b> Cuối cùng, sẽ rất khó để thư giãn hoặc nhận được sự giúp đỡ khi bạn cần. Đó là lý do tại sao tình trạng quá đông dân số là một vấn đề lớn mà chúng ta cần phải đối mặt.</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="text-align:center;margin-top:25px;display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
+        <button class="speak-btn" style="background:#2563eb;" onclick="speakSentence(`There are many disadvantages of overpopulation. Below are some reasons. First, overpopulation will pollute the environment. People throw trash on the road and the air is full of smoke. On a rainy day, you cannot see the sky well. Second, it will decrease the quality of life. People must wait in long lines at the hospital and school. Some families do not have enough money to pay for good food, so they eat cheap food like fries instead of healthy meals. Children don't have space to play, and some just sit inside all day. Next, it will increase unemployment. There are too many people. It is hard to find work. Some people may even lie or steal to get what they want. Lastly, it will be hard to relax or get help when you need it. That's why overpopulation is a big issue that we need to face.`)">
+            🔊 Listen to Full Passage
+        </button>
+        <button class="speak-btn" style="background:#059669;" onclick="toggleTest()">
+            📝 Nút Test (Kiểm tra Bài Học)
+        </button>
+    </div>
+
+    <!-- Test Box Section -->
+    <div class="test-box" id="testBox">
+        <h3 style="color:#065f46;margin-top:0;">📝 Luyện Tập Kiểm Tra Nghe & Nhận Diện Âm (Bài A3)</h3>
+        
+        <!-- Câu 1 -->
+        <div class="test-question" data-answer="rain">
+            <p><b>Câu 1:</b> Nghe âm mẫu và chọn từ có chứa âm <b>/eɪ/</b> (AI / AY):</p>
+            <button class="speak-btn" style="padding:4px 10px;font-size:13px;background:#2563eb;" onclick="speak('rain')">🔊 Nghe âm mẫu</button>
+            <div class="options-grid">
+                <span class="option-btn" onclick="selectOption(this, 1)">rain</span>
+                <span class="option-btn" onclick="selectOption(this, 1)">road</span>
+                <span class="option-btn" onclick="selectOption(this, 1)">rescue</span>
+                <span class="option-btn" onclick="selectOption(this, 1)">need</span>
+            </div>
+        </div>
+
+        <!-- Câu 2 -->
+        <div class="test-question" data-answer="coat">
+            <p><b>Câu 2:</b> Từ nào dưới đây chứa âm đôi <b>/oʊ/</b> (OA / OE)?</p>
+            <div class="options-grid">
+                <span class="option-btn" onclick="selectOption(this, 2)">team</span>
+                <span class="option-btn" onclick="selectOption(this, 2)">coat</span>
+                <span class="option-btn" onclick="selectOption(this, 2)">fries</span>
+                <span class="option-btn" onclick="selectOption(this, 2)">play</span>
+            </div>
+        </div>
+
+        <!-- Câu 3 -->
+        <div class="test-question" data-answer="money">
+            <p><b>Câu 3:</b> Từ nào là trường hợp <b>ngoại lệ</b> phát âm được nhắc tới trong bài?</p>
+            <div class="options-grid">
+                <span class="option-btn" onclick="selectOption(this, 3)">play</span>
+                <span class="option-btn" onclick="selectOption(this, 3)">lie</span>
+                <span class="option-btn" onclick="selectOption(this, 3)">money</span>
+                <span class="option-btn" onclick="selectOption(this, 3)">cheap</span>
+            </div>
+        </div>
+
+        <!-- Câu 4 -->
+        <div class="test-question" data-answer="fries">
+            <p><b>Câu 4:</b> Từ <b>"fries"</b> chứa nhóm nguyên âm nào và phát âm là âm gì?</p>
+            <div class="options-grid">
+                <span class="option-btn" onclick="selectOption(this, 4)">IE phát âm là /aɪ/</span>
+                <span class="option-btn" onclick="selectOption(this, 4)">EA phát âm là /iː/</span>
+                <span class="option-btn" onclick="selectOption(this, 4)">AY phát âm là /eɪ/</span>
+                <span class="option-btn" onclick="selectOption(this, 4)">UE phát âm là /juː/</span>
+            </div>
+        </div>
+
+        <!-- Câu 5 -->
+        <div class="test-question" data-answer="rescue">
+            <p><b>Câu 5:</b> Nghe âm mẫu và chọn từ tương ứng có nhóm <b>UE / EU / EW</b>:</p>
+            <button class="speak-btn" style="padding:4px 10px;font-size:13px;background:#2563eb;" onclick="speak('rescue')">🔊 Nghe âm mẫu</button>
+            <div class="options-grid">
+                <span class="option-btn" onclick="selectOption(this, 5)">rescue</span>
+                <span class="option-btn" onclick="selectOption(this, 5)">steal</span>
+                <span class="option-btn" onclick="selectOption(this, 5)">wait</span>
+                <span class="option-btn" onclick="selectOption(this, 5)">coach</span>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:20px;">
+            <button onclick="submitTest()" style="background:#16a34a;font-size:16px;padding:10px 24px;">🚀 Nộp Bài Kiểm Tra</button>
+        </div>
+
+        <div id="testResult" class="test-result"></div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📌 CÔNG THỨC GHI NHỚ</h2>
+    <div style="background:#eef6ff;border-left:6px solid #2563eb;padding:20px;border-radius:12px;text-align:center;">
+        <h3 style="color:#d32f2f;">There are + many + Danh từ thêm -s/-es</h3>
+        <p style="font-size:20px;">Có nhiều...</p>
+    </div>
+</div>
+</main>
+
+<!-- Lightbox Modal -->
+<div id="imgModal" class="modal" onclick="closeModal()">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImg">
+</div>
+
+<!-- Popup Thông Báo Hoàn Thành 100% -->
+<div id="completionPopup" class="popup-overlay">
+    <div class="popup-card">
+        <h2>🎉 XIN CHÚC MỪNG!</h2>
+        <p style="font-size:16px;color:#475569;">Bạn đã hoàn thành thu âm tất cả 11 câu trong bài đọc A3 xuất sắc!</p>
+        <a href="PhonicsA4.html" class="btn-next-page">👉 Chuyển sang bài A4</a>
+    </div>
+</div>
+
+<footer>© Ms. Thu Nguyễn – English for Beginners</footer>
+
+<script>
+let femaleVoice = null;
+const totalSentences = 11;
+const recordedSentences = new Set();
+let mediaRecorder;
+let audioChunks = {};
+let audioUrls = {};
+let userAnswers = {};
+
+function loadVoices(){
+    const voices = speechSynthesis.getVoices();
+    femaleVoice =
+        voices.find(v=>v.name.includes("Google US English")) ||
+        voices.find(v=>v.name.includes("Microsoft Aria")) ||
+        voices.find(v=>v.name.includes("Samantha")) ||
+        voices.find(v=>v.name.includes("Female")) ||
+        voices.find(v=>v.lang==="en-US") ||
+        voices.find(v=>v.lang.startsWith("en"));
+}
+
+loadVoices();
+if(speechSynthesis.onvoiceschanged !== undefined){
+    speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speak(text){
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-US";
+    utter.rate = 0.85;
+    utter.pitch = 1.15;
+    if(femaleVoice) utter.voice = femaleVoice;
+    speechSynthesis.speak(utter);
+}
+
+function speakSentence(text){
+    speak(text);
+}
+
+/* Update Recording Progress & Show Popup When 100% */
+function updateProgress(sentenceIndex) {
+    recordedSentences.add(sentenceIndex);
+    const count = recordedSentences.size;
+    const percent = Math.round((count / totalSentences) * 100);
+    
+    document.getElementById('progressBar').style.width = percent + '%';
+    document.getElementById('progressText').innerText = `${count} / ${totalSentences} câu (${percent}%)`;
+
+    if (count === totalSentences) {
+        setTimeout(() => {
+            document.getElementById('completionPopup').style.display = 'flex';
+        }, 500);
+    }
+}
+
+/* Fast forward feature for teachers/testing */
+function autoFillRecording() {
+    for (let i = 1; i <= totalSentences; i++) {
+        recordedSentences.add(i);
+        const playBtn = document.getElementById(`playRec${i}`);
+        if (playBtn) playBtn.style.display = 'inline-block';
+    }
+    updateProgress(totalSentences);
+}
+
+/* Recording Logic */
+async function toggleRecord(index, btn) {
+    if (btn.classList.contains('recording')) {
+        mediaRecorder.stop();
+        btn.classList.remove('recording');
+        btn.innerText = '🎤 Thu âm lại';
+    } else {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks[index] = [];
+
+            mediaRecorder.ondataavailable = e => {
+                audioChunks[index].push(e.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunks[index], { type: 'audio/mp3' });
+                audioUrls[index] = URL.createObjectURL(blob);
+                document.getElementById(`playRec${index}`).style.display = 'inline-block';
+                updateProgress(index);
+            };
+
+            mediaRecorder.start();
+            btn.classList.add('recording');
+            btn.innerText = '⏹ Đang thu...';
+        } catch (err) {
+            alert('Vui lòng cấp quyền truy cập Micro để ghi âm!');
+        }
+    }
+}
+
+function playRecord(index) {
+    if (audioUrls[index]) {
+        const audio = new Audio(audioUrls[index]);
+        audio.play();
+    }
+}
+
+/* Lightbox Modal */
+function openModal(src) {
+    document.getElementById("imgModal").style.display = "flex";
+    document.getElementById("modalImg").src = src;
+}
+
+function closeModal() {
+    document.getElementById("imgModal").style.display = "none";
+}
+
+/* Test Toggle & Interactive Functions */
+function toggleTest() {
+    const testBox = document.getElementById("testBox");
+    testBox.style.display = testBox.style.display === "block" ? "none" : "block";
+    if(testBox.style.display === "block") testBox.scrollIntoView({ behavior: 'smooth' });
+}
+
+function selectOption(btn, qNum) {
+    const parent = btn.closest('.options-grid');
+    const options = parent.querySelectorAll('.option-btn');
+    options.forEach(opt => opt.classList.remove('selected'));
+    btn.classList.add('selected');
+    userAnswers[qNum] = btn.innerText.trim();
+}
+
+function submitTest() {
+    const questions = document.querySelectorAll('.test-question');
+    let score = 0;
+    const total = questions.length;
+
+    questions.forEach((q, index) => {
+        const qNum = index + 1;
+        const correctAnswer = q.getAttribute('data-answer').toLowerCase();
+        const options = q.querySelectorAll('.option-btn');
+
+        options.forEach(opt => {
+            opt.classList.remove('correct', 'wrong');
+            const optText = opt.innerText.trim().toLowerCase();
+            
+            if (optText.includes(correctAnswer) || optText === correctAnswer) {
+                opt.classList.add('correct');
+            }
+            if (opt.classList.contains('selected') && !(optText.includes(correctAnswer) || optText === correctAnswer)) {
+                opt.classList.add('wrong');
+            }
+        });
+
+        const selectedOpt = q.querySelector('.option-btn.selected');
+        if (selectedOpt) {
+            const selText = selectedOpt.innerText.trim().toLowerCase();
+            if (selText.includes(correctAnswer) || selText === correctAnswer) {
+                score++;
+            }
+        }
+    });
+
+    const resultDiv = document.getElementById('testResult');
+    resultDiv.style.display = 'block';
+    
+    if (score === total) {
+        resultDiv.className = 'test-result success';
+        resultDiv.innerHTML = `🎉 Tuyệt vời! Bạn đã trả lời đúng ${score}/${total} câu!`;
+    } else {
+        resultDiv.className = 'test-result warning';
+        resultDiv.innerHTML = `👍 Bạn trả lời đúng ${score}/${total} câu. Hãy xem lại các đáp án màu xanh nhé!`;
+    }
+}
+</script>
+</body>
+</html>

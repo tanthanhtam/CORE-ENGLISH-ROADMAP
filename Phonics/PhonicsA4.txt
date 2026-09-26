@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phonics A4 – Luyện Phát Âm Cơ Bản</title>
+<style>
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f6f8fb;color:#222}
+header{background:#1e3a8a;color:#fff;padding:16px 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.logo{font-size:22px;font-weight:bold}
+nav a{color:#fff;text-decoration:none;margin-left:10px;padding:8px 14px;border-radius:8px;background:rgba(255,255,255,.15)}
+nav a:hover{background:#fff;color:#1e3a8a}
+
+/* Recording Progress Bar */
+.progress-box {
+    margin-top: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 10px 14px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.progress-container {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #4ade80;
+    transition: width 0.4s ease;
+}
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #e0e7ff;
+}
+.btn-admin-test {
+    background: #f59e0b;
+    color: #fff;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-admin-test:hover { background: #d97706; transform: scale(1.05); }
+
+main{max-width:1100px;margin:auto;padding:20px}
+.card{background:#fff;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+h2{color:#1e3a8a;border-left:5px solid #1e3a8a;padding-left:10px}
+footer{text-align:center;color:#666;padding:20px}
+
+.phonics-table, .practice-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+    font-size:15px;
+}
+.phonics-table th, .practice-table th{
+    background:#1e3a8a;
+    color:#fff;
+    padding:12px;
+    text-align:left;
+}
+.phonics-table td, .practice-table td{
+    border:1px solid #e5e7eb;
+    padding:12px;
+    vertical-align:top;
+}
+.phonics-table tr:nth-child(even), .practice-table tr:nth-child(even){background:#f8fbff;}
+.phonics-table tr:hover, .practice-table tr:hover{background:#eef5ff;}
+
+/* Audio Word Item Wrapper */
+.word-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #e8f0ff;
+    padding: 4px 8px;
+    border-radius: 20px;
+    margin: 4px;
+}
+.audio-word{
+    color:#1e3a8a;
+    font-weight:600;
+    cursor:pointer;
+    user-select:none;
+}
+.audio-word:hover{ color:#2563eb; }
+
+/* Buttons */
+.speak-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:16px;
+    transition:.25s;
+}
+.speak-btn:hover{ background:#1d4ed8; transform:scale(1.05); }
+
+.btn-rec {
+    background: #ef4444;
+    color: white;
+    border: none;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-rec.recording {
+    animation: pulse 1s infinite;
+    background: #dc2626;
+}
+.btn-play-rec {
+    background: #10b981;
+    color: white;
+    border: none;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: none;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.practice-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;
+    margin-top:20px;
+}
+.practice-item{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+    transition:.3s;
+    text-align:center;
+    padding-bottom:20px;
+}
+.practice-item:hover{ transform:translateY(-8px); }
+.practice-item img{ width:100%; height:260px; object-fit:cover; }
+.practice-item p{ margin:12px 20px; font-size:18px; line-height:1.6; }
+
+/* Full Width Image */
+.full-width-img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.15);
+    display: block;
+}
+
+/* Completion Popup Modal */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+.popup-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 420px;
+    width: 90%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: popIn 0.3s ease;
+}
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+.popup-card h2 { color: #16a34a; border: none; padding: 0; margin-bottom: 10px; }
+.btn-next-page {
+    background: #2563eb;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+}
+.btn-next-page:hover { background: #1d4ed8; }
+</style>
+</head>
+<body>
+
+<header>
+<div class="top">
+    <div class="logo">📘 Phonics A4 – Luyện Phát Âm Cơ Bản</div>
+    <nav>
+        <a href="../Phonics.html">📚 Phonics</a>
+        <a href="../Home.html">🏠 Trang chủ</a>
+    </nav>
+</div>
+<div class="progress-box">
+    <div class="progress-info">
+        <span>🎙️ Tiến độ thu âm (Từ vựng & Câu):</span>
+        <span id="progressText">0 / 0 (0%)</span>
+        <button class="btn-admin-test" onclick="adminQuickTest()">⚡ Test Nhanh Admin</button>
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+</div>
+</header>
+
+<main>
+<div class="card">
+    <h2>📘 PHONICS A4 – LUYỆN PHÁT ÂM CƠ BẢN</h2>
+    <p>Bài học này giúp bạn làm quen với <b>nguyên âm ghép (Vowel Sounds)</b>. Đây là nhóm âm xuất hiện rất nhiều trong tiếng Anh và thường gây nhầm lẫn khi đọc.</p>
+    <ul>
+        <li>⭐ Quy tắc 4 – Nguyên âm ghép (Vowel Sounds)</li>
+        <li>⭐ Luyện đọc đoạn hội thoại</li>
+        <li>⭐ Luyện Speaking A2</li>
+    </ul>
+</div>
+
+<div class="card">
+    <h2>⭐ QUY TẮC 4 – NGUYÊN ÂM GHÉP</h2>
+    <p><b>👉 Quy tắc:</b></p>
+    <div style="background:#eef6ff;border-left:6px solid #2563eb;padding:20px;border-radius:10px;line-height:1.8;margin-bottom:20px;">
+        Nguyên âm ghép là sự kết hợp của <b>hai nguyên âm</b> trong cùng một từ để tạo thành <b>một âm mới.</b> Mỗi nhóm nguyên âm ghép có quy tắc phát âm riêng.
+    </div>
+    <div style="text-align:center;">
+        <img src="images/A4.png" class="full-width-img" alt="Quy tắc 4">
+    </div>
+</div>
+
+<div class="card">
+    <h2>📚 CÁC NHÓM NGUYÊN ÂM GHÉP</h2>
+    <p>Nhấn vào từng từ để nghe phát âm, sau đó bấm <b>🎤 Rec</b> để thu âm lại.</p>
+
+    <table class="practice-table">
+        <tr>
+            <th width="18%">Nhóm</th>
+            <th>Ví dụ & Thu âm</th>
+        </tr>
+        <tr>
+            <td><b>ey / eigh</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('they')">🔊 they</span><button class="btn-rec" onclick="toggleRecord('w_they', this)">🎤</button><button class="btn-play-rec" id="playRec_w_they" onclick="playRecord('w_they')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('obey')">🔊 obey</span><button class="btn-rec" onclick="toggleRecord('w_obey', this)">🎤</button><button class="btn-play-rec" id="playRec_w_obey" onclick="playRecord('w_obey')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('survey')">🔊 survey</span><button class="btn-rec" onclick="toggleRecord('w_survey', this)">🎤</button><button class="btn-play-rec" id="playRec_w_survey" onclick="playRecord('w_survey')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('eight')">🔊 eight</span><button class="btn-rec" onclick="toggleRecord('w_eight', this)">🎤</button><button class="btn-play-rec" id="playRec_w_eight" onclick="playRecord('w_eight')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('weigh')">🔊 weigh</span><button class="btn-rec" onclick="toggleRecord('w_weigh', this)">🎤</button><button class="btn-play-rec" id="playRec_w_weigh" onclick="playRecord('w_weigh')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('neighbor')">🔊 neighbor</span><button class="btn-rec" onclick="toggleRecord('w_neighbor', this)">🎤</button><button class="btn-play-rec" id="playRec_w_neighbor" onclick="playRecord('w_neighbor')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>ie² = y²</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('cookie')">🔊 cookie</span><button class="btn-rec" onclick="toggleRecord('w_cookie', this)">🎤</button><button class="btn-play-rec" id="playRec_w_cookie" onclick="playRecord('w_cookie')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('cuties')">🔊 cuties</span><button class="btn-rec" onclick="toggleRecord('w_cuties', this)">🎤</button><button class="btn-play-rec" id="playRec_w_cuties" onclick="playRecord('w_cuties')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('studied')">🔊 studied</span><button class="btn-rec" onclick="toggleRecord('w_studied', this)">🎤</button><button class="btn-play-rec" id="playRec_w_studied" onclick="playRecord('w_studied')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('candies')">🔊 candies</span><button class="btn-rec" onclick="toggleRecord('w_candies', this)">🎤</button><button class="btn-play-rec" id="playRec_w_candies" onclick="playRecord('w_candies')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('city')">🔊 city</span><button class="btn-rec" onclick="toggleRecord('w_city', this)">🎤</button><button class="btn-play-rec" id="playRec_w_city" onclick="playRecord('w_city')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('cute')">🔊 cute</span><button class="btn-rec" onclick="toggleRecord('w_cute', this)">🎤</button><button class="btn-play-rec" id="playRec_w_cute" onclick="playRecord('w_cute')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('study')">🔊 study</span><button class="btn-rec" onclick="toggleRecord('w_study', this)">🎤</button><button class="btn-play-rec" id="playRec_w_study" onclick="playRecord('w_study')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('candy')">🔊 candy</span><button class="btn-rec" onclick="toggleRecord('w_candy', this)">🎤</button><button class="btn-play-rec" id="playRec_w_candy" onclick="playRecord('w_candy')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>igh / ild / ind</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('light')">🔊 light</span><button class="btn-rec" onclick="toggleRecord('w_light', this)">🎤</button><button class="btn-play-rec" id="playRec_w_light" onclick="playRecord('w_light')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('right')">🔊 right</span><button class="btn-rec" onclick="toggleRecord('w_right', this)">🎤</button><button class="btn-play-rec" id="playRec_w_right" onclick="playRecord('w_right')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('high')">🔊 high</span><button class="btn-rec" onclick="toggleRecord('w_high', this)">🎤</button><button class="btn-play-rec" id="playRec_w_high" onclick="playRecord('w_high')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('night')">🔊 night</span><button class="btn-rec" onclick="toggleRecord('w_night', this)">🎤</button><button class="btn-play-rec" id="playRec_w_night" onclick="playRecord('w_night')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('child')">🔊 child</span><button class="btn-rec" onclick="toggleRecord('w_child', this)">🎤</button><button class="btn-play-rec" id="playRec_w_child" onclick="playRecord('w_child')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('kind')">🔊 kind</span><button class="btn-rec" onclick="toggleRecord('w_kind', this)">🎤</button><button class="btn-play-rec" id="playRec_w_kind" onclick="playRecord('w_kind')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('wild')">🔊 wild</span><button class="btn-rec" onclick="toggleRecord('w_wild', this)">🎤</button><button class="btn-play-rec" id="playRec_w_wild" onclick="playRecord('w_wild')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('wind')">🔊 wind</span><button class="btn-rec" onclick="toggleRecord('w_wind', this)">🎤</button><button class="btn-play-rec" id="playRec_w_wind" onclick="playRecord('w_wind')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>ow / old / ost / oth</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('snow')">🔊 snow</span><button class="btn-rec" onclick="toggleRecord('w_snow', this)">🎤</button><button class="btn-play-rec" id="playRec_w_snow" onclick="playRecord('w_snow')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('grow')">🔊 grow</span><button class="btn-rec" onclick="toggleRecord('w_grow', this)">🎤</button><button class="btn-play-rec" id="playRec_w_grow" onclick="playRecord('w_grow')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('crow')">🔊 crow</span><button class="btn-rec" onclick="toggleRecord('w_crow', this)">🎤</button><button class="btn-play-rec" id="playRec_w_crow" onclick="playRecord('w_crow')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('own')">🔊 own</span><button class="btn-rec" onclick="toggleRecord('w_own', this)">🎤</button><button class="btn-play-rec" id="playRec_w_own" onclick="playRecord('w_own')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('below')">🔊 below</span><button class="btn-rec" onclick="toggleRecord('w_below', this)">🎤</button><button class="btn-play-rec" id="playRec_w_below" onclick="playRecord('w_below')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('gold')">🔊 gold</span><button class="btn-rec" onclick="toggleRecord('w_gold', this)">🎤</button><button class="btn-play-rec" id="playRec_w_gold" onclick="playRecord('w_gold')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('most')">🔊 most</span><button class="btn-rec" onclick="toggleRecord('w_most', this)">🎤</button><button class="btn-play-rec" id="playRec_w_most" onclick="playRecord('w_most')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('both')">🔊 both</span><button class="btn-rec" onclick="toggleRecord('w_both', this)">🎤</button><button class="btn-play-rec" id="playRec_w_both" onclick="playRecord('w_both')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('post')">🔊 post</span><button class="btn-rec" onclick="toggleRecord('w_post', this)">🎤</button><button class="btn-play-rec" id="playRec_w_post" onclick="playRecord('w_post')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>ue / ui</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('blue')">🔊 blue</span><button class="btn-rec" onclick="toggleRecord('w_blue', this)">🎤</button><button class="btn-play-rec" id="playRec_w_blue" onclick="playRecord('w_blue')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('true')">🔊 true</span><button class="btn-rec" onclick="toggleRecord('w_true', this)">🎤</button><button class="btn-play-rec" id="playRec_w_true" onclick="playRecord('w_true')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('glue')">🔊 glue</span><button class="btn-rec" onclick="toggleRecord('w_glue', this)">🎤</button><button class="btn-play-rec" id="playRec_w_glue" onclick="playRecord('w_glue')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('issue')">🔊 issue</span><button class="btn-rec" onclick="toggleRecord('w_issue', this)">🎤</button><button class="btn-play-rec" id="playRec_w_issue" onclick="playRecord('w_issue')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('tissue')">🔊 tissue</span><button class="btn-rec" onclick="toggleRecord('w_tissue', this)">🎤</button><button class="btn-play-rec" id="playRec_w_tissue" onclick="playRecord('w_tissue')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('fruit')">🔊 fruit</span><button class="btn-rec" onclick="toggleRecord('w_fruit', this)">🎤</button><button class="btn-play-rec" id="playRec_w_fruit" onclick="playRecord('w_fruit')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('juice')">🔊 juice</span><button class="btn-rec" onclick="toggleRecord('w_juice', this)">🎤</button><button class="btn-play-rec" id="playRec_w_juice" onclick="playRecord('w_juice')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('cruise')">🔊 cruise</span><button class="btn-rec" onclick="toggleRecord('w_cruise', this)">🎤</button><button class="btn-play-rec" id="playRec_w_cruise" onclick="playRecord('w_cruise')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('suit')">🔊 suit</span><button class="btn-rec" onclick="toggleRecord('w_suit', this)">🎤</button><button class="btn-play-rec" id="playRec_w_suit" onclick="playRecord('w_suit')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>ou / ow</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('mouth')">🔊 mouth</span><button class="btn-rec" onclick="toggleRecord('w_mouth', this)">🎤</button><button class="btn-play-rec" id="playRec_w_mouth" onclick="playRecord('w_mouth')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('house')">🔊 house</span><button class="btn-rec" onclick="toggleRecord('w_house', this)">🎤</button><button class="btn-play-rec" id="playRec_w_house" onclick="playRecord('w_house')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('cow')">🔊 cow</span><button class="btn-rec" onclick="toggleRecord('w_cow', this)">🎤</button><button class="btn-play-rec" id="playRec_w_cow" onclick="playRecord('w_cow')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('town')">🔊 town</span><button class="btn-rec" onclick="toggleRecord('w_town', this)">🎤</button><button class="btn-play-rec" id="playRec_w_town" onclick="playRecord('w_town')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('crowd')">🔊 crowd</span><button class="btn-rec" onclick="toggleRecord('w_crowd', this)">🎤</button><button class="btn-play-rec" id="playRec_w_crowd" onclick="playRecord('w_crowd')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>au / aw</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('sauce')">🔊 sauce</span><button class="btn-rec" onclick="toggleRecord('w_sauce', this)">🎤</button><button class="btn-play-rec" id="playRec_w_sauce" onclick="playRecord('w_sauce')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('laundry')">🔊 laundry</span><button class="btn-rec" onclick="toggleRecord('w_laundry', this)">🎤</button><button class="btn-play-rec" id="playRec_w_laundry" onclick="playRecord('w_laundry')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('draw')">🔊 draw</span><button class="btn-rec" onclick="toggleRecord('w_draw', this)">🎤</button><button class="btn-play-rec" id="playRec_w_draw" onclick="playRecord('w_draw')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('saw')">🔊 saw</span><button class="btn-rec" onclick="toggleRecord('w_saw', this)">🎤</button><button class="btn-play-rec" id="playRec_w_saw" onclick="playRecord('w_saw')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>oi / oy</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('boil')">🔊 boil</span><button class="btn-rec" onclick="toggleRecord('w_boil', this)">🎤</button><button class="btn-play-rec" id="playRec_w_boil" onclick="playRecord('w_boil')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('coin')">🔊 coin</span><button class="btn-rec" onclick="toggleRecord('w_coin', this)">🎤</button><button class="btn-play-rec" id="playRec_w_coin" onclick="playRecord('w_coin')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('boy')">🔊 boy</span><button class="btn-rec" onclick="toggleRecord('w_boy', this)">🎤</button><button class="btn-play-rec" id="playRec_w_boy" onclick="playRecord('w_boy')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('toy')">🔊 toy</span><button class="btn-rec" onclick="toggleRecord('w_toy', this)">🎤</button><button class="btn-play-rec" id="playRec_w_toy" onclick="playRecord('w_toy')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>oo / ou</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('book')">🔊 book</span><button class="btn-rec" onclick="toggleRecord('w_book', this)">🎤</button><button class="btn-play-rec" id="playRec_w_book" onclick="playRecord('w_book')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('cook')">🔊 cook</span><button class="btn-rec" onclick="toggleRecord('w_cook', this)">🎤</button><button class="btn-play-rec" id="playRec_w_cook" onclick="playRecord('w_cook')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('tooth')">🔊 tooth</span><button class="btn-rec" onclick="toggleRecord('w_tooth', this)">🎤</button><button class="btn-play-rec" id="playRec_w_tooth" onclick="playRecord('w_tooth')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('soup')">🔊 soup</span><button class="btn-rec" onclick="toggleRecord('w_soup', this)">🎤</button><button class="btn-play-rec" id="playRec_w_soup" onclick="playRecord('w_soup')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('group')">🔊 group</span><button class="btn-rec" onclick="toggleRecord('w_group', this)">🎤</button><button class="btn-play-rec" id="playRec_w_group" onclick="playRecord('w_group')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('moon')">🔊 moon</span><button class="btn-rec" onclick="toggleRecord('w_moon', this)">🎤</button><button class="btn-play-rec" id="playRec_w_moon" onclick="playRecord('w_moon')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('look')">🔊 look</span><button class="btn-rec" onclick="toggleRecord('w_look', this)">🎤</button><button class="btn-play-rec" id="playRec_w_look" onclick="playRecord('w_look')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('should')">🔊 should</span><button class="btn-rec" onclick="toggleRecord('w_should', this)">🎤</button><button class="btn-play-rec" id="playRec_w_should" onclick="playRecord('w_should')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('would')">🔊 would</span><button class="btn-rec" onclick="toggleRecord('w_would', this)">🎤</button><button class="btn-play-rec" id="playRec_w_would" onclick="playRecord('w_would')">▶</button></div>
+            </td>
+        </tr>
+        <tr>
+            <td><b>-all / -ell / -ill / -ull / _le / _il</b></td>
+            <td>
+                <div class="word-item"><span class="audio-word" onclick="speak('ball')">🔊 ball</span><button class="btn-rec" onclick="toggleRecord('w_ball', this)">🎤</button><button class="btn-play-rec" id="playRec_w_ball" onclick="playRecord('w_ball')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('call')">🔊 call</span><button class="btn-rec" onclick="toggleRecord('w_call', this)">🎤</button><button class="btn-play-rec" id="playRec_w_call" onclick="playRecord('w_call')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('mall')">🔊 mall</span><button class="btn-rec" onclick="toggleRecord('w_mall', this)">🎤</button><button class="btn-play-rec" id="playRec_w_mall" onclick="playRecord('w_mall')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('tall')">🔊 tall</span><button class="btn-rec" onclick="toggleRecord('w_tall', this)">🎤</button><button class="btn-play-rec" id="playRec_w_tall" onclick="playRecord('w_tall')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('shall')">🔊 shall</span><button class="btn-rec" onclick="toggleRecord('w_shall', this)">🎤</button><button class="btn-play-rec" id="playRec_w_shall" onclick="playRecord('w_shall')">▶</button></div>
+                <br><br>
+                <div class="word-item"><span class="audio-word" onclick="speak('well')">🔊 well</span><button class="btn-rec" onclick="toggleRecord('w_well', this)">🎤</button><button class="btn-play-rec" id="playRec_w_well" onclick="playRecord('w_well')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('sell')">🔊 sell</span><button class="btn-rec" onclick="toggleRecord('w_sell', this)">🎤</button><button class="btn-play-rec" id="playRec_w_sell" onclick="playRecord('w_sell')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('bell')">🔊 bell</span><button class="btn-rec" onclick="toggleRecord('w_bell', this)">🎤</button><button class="btn-play-rec" id="playRec_w_bell" onclick="playRecord('w_bell')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('smell')">🔊 smell</span><button class="btn-rec" onclick="toggleRecord('w_smell', this)">🎤</button><button class="btn-play-rec" id="playRec_w_smell" onclick="playRecord('w_smell')">▶</button></div>
+                <br><br>
+                <div class="word-item"><span class="audio-word" onclick="speak('will')">🔊 will</span><button class="btn-rec" onclick="toggleRecord('w_will', this)">🎤</button><button class="btn-play-rec" id="playRec_w_will" onclick="playRecord('w_will')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('pill')">🔊 pill</span><button class="btn-rec" onclick="toggleRecord('w_pill', this)">🎤</button><button class="btn-play-rec" id="playRec_w_pill" onclick="playRecord('w_pill')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('fill')">🔊 fill</span><button class="btn-rec" onclick="toggleRecord('w_fill', this)">🎤</button><button class="btn-play-rec" id="playRec_w_fill" onclick="playRecord('w_fill')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('hill')">🔊 hill</span><button class="btn-rec" onclick="toggleRecord('w_hill', this)">🎤</button><button class="btn-play-rec" id="playRec_w_hill" onclick="playRecord('w_hill')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('still')">🔊 still</span><button class="btn-rec" onclick="toggleRecord('w_still', this)">🎤</button><button class="btn-play-rec" id="playRec_w_still" onclick="playRecord('w_still')">▶</button></div>
+                <br><br>
+                <div class="word-item"><span class="audio-word" onclick="speak('full')">🔊 full</span><button class="btn-rec" onclick="toggleRecord('w_full', this)">🎤</button><button class="btn-play-rec" id="playRec_w_full" onclick="playRecord('w_full')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('bull')">🔊 bull</span><button class="btn-rec" onclick="toggleRecord('w_bull', this)">🎤</button><button class="btn-play-rec" id="playRec_w_bull" onclick="playRecord('w_bull')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('pull')">🔊 pull</span><button class="btn-rec" onclick="toggleRecord('w_pull', this)">🎤</button><button class="btn-play-rec" id="playRec_w_pull" onclick="playRecord('w_pull')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('simple')">🔊 simple</span><button class="btn-rec" onclick="toggleRecord('w_simple', this)">🎤</button><button class="btn-play-rec" id="playRec_w_simple" onclick="playRecord('w_simple')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('table')">🔊 table</span><button class="btn-rec" onclick="toggleRecord('w_table', this)">🎤</button><button class="btn-play-rec" id="playRec_w_table" onclick="playRecord('w_table')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('little')">🔊 little</span><button class="btn-rec" onclick="toggleRecord('w_little', this)">🎤</button><button class="btn-play-rec" id="playRec_w_little" onclick="playRecord('w_little')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('pencil')">🔊 pencil</span><button class="btn-rec" onclick="toggleRecord('w_pencil', this)">🎤</button><button class="btn-play-rec" id="playRec_w_pencil" onclick="playRecord('w_pencil')">▶</button></div>
+                <div class="word-item"><span class="audio-word" onclick="speak('April')">🔊 April</span><button class="btn-rec" onclick="toggleRecord('w_April', this)">🎤</button><button class="btn-play-rec" id="playRec_w_April" onclick="playRecord('w_April')">▶</button></div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="card">
+    <h2>🎧 LUYỆN TẬP PHÁT ÂM CÂU</h2>
+    <p>Nhấn nút <b>🔊</b> để nghe câu mẫu và <b>🎤 Thu âm</b> câu của bạn.</p>
+    <table class="practice-table">
+        <tr>
+            <th width="8%">#</th>
+            <th>Câu luyện tập</th>
+            <th width="140">Thao tác</th>
+        </tr>
+        <tr>
+            <td><b>1</b></td>
+            <td>
+                <b>The boy has a toy and a book in his house.</b><br><br>
+                <i>👉 Cậu bé có một món đồ chơi và một quyển sách trong ngôi nhà của mình.</i>
+            </td>
+            <td>
+                <button class="speak-btn" onclick="speakSentence('The boy has a toy and a book in his house.')">🔊</button>
+                <button class="btn-rec" onclick="toggleRecord('s_1', this)">🎤 Thu</button>
+                <button class="btn-play-rec" id="playRec_s_1" onclick="playRecord('s_1')">▶ Nghe</button>
+            </td>
+        </tr>
+        <tr>
+            <td><b>2</b></td>
+            <td>
+                <b>My mother can cook soup very well, and it smells like sauce.</b><br><br>
+                <i>👉 Mẹ tôi nấu súp rất ngon, và nó có mùi giống như nước sốt.</i>
+            </td>
+            <td>
+                <button class="speak-btn" onclick="speakSentence('My mother can cook soup very well, and it smells like sauce.')">🔊</button>
+                <button class="btn-rec" onclick="toggleRecord('s_2', this)">🎤 Thu</button>
+                <button class="btn-play-rec" id="playRec_s_2" onclick="playRecord('s_2')">▶ Nghe</button>
+            </td>
+        </tr>
+        <tr>
+            <td><b>3</b></td>
+            <td>
+                <b>We saw a cow on the hill, near a small town, and it looked very still.</b><br><br>
+                <i>👉 Chúng tôi thấy một con bò trên đồi, gần một thị trấn nhỏ, và nó trông rất yên lặng.</i>
+            </td>
+            <td>
+                <button class="speak-btn" onclick="speakSentence('We saw a cow on the hill, near a small town, and it looked very still.')">🔊</button>
+                <button class="btn-rec" onclick="toggleRecord('s_3', this)">🎤 Thu</button>
+                <button class="btn-play-rec" id="playRec_s_3" onclick="playRecord('s_3')">▶ Nghe</button>
+            </td>
+        </tr>
+        <tr>
+            <td><b>4</b></td>
+            <td>
+                <b>After studying the survey about how children grow, a research team from the U.S. said that fruit, juice, and candies can affect children's weight and cause health issues over time.</b><br><br>
+                <i>👉 Sau khi làm nghiên cứu khảo sát về sự phát triển của trẻ em, một nhóm nghiên cứu từ Mỹ cho biết trái cây, nước ép và kẹo có thể ảnh hưởng đến cân nặng và gây ra các vấn đề sức khỏe của trẻ em theo thời gian.</i>
+            </td>
+            <td>
+                <button class="speak-btn" onclick="speakSentence(`After studying the survey about how children grow, a research team from the U.S. said that fruit, juice, and candies can affect children's weight and cause health issues over time.`)">🔊</button>
+                <button class="btn-rec" onclick="toggleRecord('s_4', this)">🎤 Thu</button>
+                <button class="btn-play-rec" id="playRec_s_4" onclick="playRecord('s_4')">▶ Nghe</button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="card">
+    <h2>🎤 Speaking Practice 1</h2>
+    <h3 style="color:#2563eb;">❓ Do you often read books? Why?</h3>
+    <p style="color:#666;font-style:italic;">(Bạn thường đọc sách không? Tại sao?)</p>
+    <div class="practice-grid">
+        <div class="practice-item">
+            <img src="images/A4a.png" alt="Reading Books">
+            <p><b>Yes, I often read books at the table in my house after finishing my work because it helps me relax before bed.</b></p>
+            <p style="color:#555;line-height:1.8;">→ Vâng, tôi thường đọc sách ở bàn trong nhà sau khi hoàn thành công việc vì nó giúp tôi thư giãn trước khi đi ngủ.</p>
+            <div style="display:flex;justify-content:center;gap:10px;margin-top:10px;">
+                <button class="speak-btn" onclick="speakSentence('Yes, I often read books at the table in my house after finishing my work because it helps me relax before bed.')">🔊 Listen</button>
+                <button class="btn-rec" style="font-size:14px;padding:6px 12px;" onclick="toggleRecord('sp_1', this)">🎤 Thu âm câu trả lời</button>
+                <button class="btn-play-rec" style="font-size:14px;padding:6px 12px;" id="playRec_sp_1" onclick="playRecord('sp_1')">▶ Nghe lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>🎤 Speaking Practice 2</h2>
+    <h3 style="color:#2563eb;">❓ What kind of book do you read?</h3>
+    <p style="color:#666;font-style:italic;">(Bạn thường đọc loại sách gì?)</p>
+    <div class="practice-grid">
+        <div class="practice-item">
+            <img src="images/A4b.png" alt="Story Books">
+            <p><b>I like to read simple storybooks. Sometimes, I read books that teach me how to cook soup or how to draw with a pencil. I also like books with fun pictures of the moon over a hill, a cow in a small town or a big mouth with one tooth.</b></p>
+            <p style="color:#555;line-height:1.8;">→ Tôi thích đọc những cuốn truyện đơn giản. Thỉnh thoảng, tôi đọc những cuốn sách dạy tôi cách nấu súp hoặc vẽ bằng bút chì. Tôi cũng thích những cuốn sách có tranh vui nhộn, như mặt trăng trên đồi, một con bò trong thị trấn nhỏ hoặc một cái miệng to với một chiếc răng.</p>
+            <div style="display:flex;justify-content:center;gap:10px;margin-top:10px;">
+                <button class="speak-btn" onclick="speakSentence('I like to read simple storybooks. Sometimes, I read books that teach me how to cook soup or how to draw with a pencil. I also like books with fun pictures of the moon over a hill, a cow in a small town or a big mouth with one tooth.')">🔊 Listen</button>
+                <button class="btn-rec" style="font-size:14px;padding:6px 12px;" onclick="toggleRecord('sp_2', this)">🎤 Thu âm câu trả lời</button>
+                <button class="btn-play-rec" style="font-size:14px;padding:6px 12px;" id="playRec_sp_2" onclick="playRecord('sp_2')">▶ Nghe lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h2>📖 LUYỆN TẬP PHÁT ÂM 2</h2>
+    <p>Nhấn vào nút <b>🔊 Read the Passage</b> để nghe bài đọc.</p>
+    <h3 style="color:#2563eb;">🌳 Topic: The Benefits of Living in the Countryside</h3>
+    <div style="text-align:center;margin:25px 0;">
+        <img src="images/A4c.png" class="full-width-img" alt="Countryside">
+    </div>
+    <h3>💡 Main Ideas</h3>
+    <ul style="line-height:2;font-size:17px;">
+        <li>🍎 Eating healthy food</li>
+        <li>⚽ Playing outdoor activities</li>
+        <li>🤝 Helping others</li>
+        <li>💬 Your own ideas</li>
+    </ul>
+    <hr>
+    <h3>📄 Reading Passage</h3>
+    <div style="background:#f8fbff;padding:22px;border-left:6px solid #2563eb;border-radius:10px;line-height:2;font-size:18px;">
+        There are many <b>benefits</b> of living in the countryside. Below are some reasons. First, children can eat more healthy food. They won't eat too many <b>cookies</b> or <b>candies</b>, and instead, they can enjoy <b>fruit</b> and <b>juice</b>. Second, they can play more outdoor activities. A child will be <b>cute</b>, <b>obey</b> every rule, and can stay away from video games or the Internet. They are free to <b>grow</b> because they play more traditional games. Besides, the <b>neighbor</b> is <b>kind</b>, and people often help each other. Last but not least, the place there is quiet. That's why living in the countryside is the <b>right</b> choice.
+    </div>
+    <div style="text-align:center;margin:25px 0;display:flex;justify-content:center;gap:15px;flex-wrap:wrap;">
+        <button class="speak-btn" style="font-size:18px;padding:12px 24px;" onclick="speakSentence(`There are many benefits of living in the countryside. Below are some reasons. First, children can eat more healthy food. They won't eat too many cookies or candies, and instead, they can enjoy fruit and juice. Second, they can play more outdoor activities. A child will be cute, obey every rule, and can stay away from video games or the Internet. They are free to grow because they play more traditional games. Besides, the neighbor is kind, and people often help each other. Last but not least, the place there is quiet. That's why living in the countryside is the right choice.`)">🔊 Read the Passage</button>
+        <button class="btn-rec" style="font-size:18px;padding:12px 24px;" onclick="toggleRecord('rp_passage', this)">🎤 Thu âm toàn bài</button>
+        <button class="btn-play-rec" style="font-size:18px;padding:12px 24px;" id="playRec_rp_passage" onclick="playRecord('rp_passage')">▶ Nghe lại bài đọc</button>
+    </div>
+    <hr>
+    <h3>🇻🇳 Bài dịch</h3>
+    <div style="background:#fffdf7;padding:22px;border-left:6px solid #16a34a;border-radius:10px;line-height:2;font-size:17px;">
+        Có nhiều lợi ích khi sống ở vùng quê. Dưới đây là một số lý do. Thứ nhất, trẻ em có thể ăn nhiều thực phẩm lành mạnh hơn. Các em sẽ không ăn quá nhiều bánh quy hay kẹo ngọt, mà thay vào đó có thể thưởng thức hoa quả và nước ép. Thứ hai, các em có thể tham gia nhiều hoạt động ngoài trời hơn. Một đứa trẻ sẽ ngoan ngoãn, biết tuân theo mọi quy tắc và tránh xa trò chơi điện tử hoặc Internet. Các em được tự do phát triển vì chơi nhiều trò chơi truyền thống. Bên cạnh đó, hàng xóm rất tốt bụng và mọi người thường giúp đỡ lẫn nhau. Cuối cùng nhưng không kém phần quan trọng, nơi đây rất yên tĩnh. Đó là lý do tại sao sống ở vùng quê là một lựa chọn đúng đắn.
+    </div>
+</div>
+</main>
+
+<!-- Completion Popup Modal -->
+<div id="completionPopup" class="popup-overlay">
+    <div class="popup-card">
+        <h2>🎉 XIN CHÚC MỪNG!</h2>
+        <p style="font-size:16px;color:#475569;">Bạn đã hoàn thành thu âm toàn bộ từ vựng và câu luyện tập trong bài Phonics A4!</p>
+        <a href="PhonicsA5.html" class="btn-next-page">👉 Chuyển sang bài A5</a>
+    </div>
+</div>
+
+<footer>© Ms. Thu Nguyễn – English for Beginners</footer>
+
+<script>
+let femaleVoice = null;
+const recordedItems = new Set();
+let totalRequiredItems = 0;
+let mediaRecorder;
+let audioChunks = {};
+let audioUrls = {};
+
+function loadVoices(){
+    const voices = speechSynthesis.getVoices();
+    femaleVoice =
+        voices.find(v=>v.name.includes("Google US English")) ||
+        voices.find(v=>v.name.includes("Microsoft Aria")) ||
+        voices.find(v=>v.name.includes("Samantha")) ||
+        voices.find(v=>v.name.includes("Female")) ||
+        voices.find(v=>v.lang==="en-US") ||
+        voices.find(v=>v.lang.startsWith("en"));
+}
+
+loadVoices();
+if(speechSynthesis.onvoiceschanged !== undefined){
+    speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function speak(text){
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = "en-US";
+    utter.rate = 0.85;
+    utter.pitch = 1.15;
+    if(femaleVoice) utter.voice = femaleVoice;
+    speechSynthesis.speak(utter);
+}
+
+function speakSentence(text){
+    speak(text);
+}
+
+/* Calculate total required items */
+window.addEventListener('DOMContentLoaded', () => {
+    // Count all record buttons to set dynamic total
+    const recButtons = document.querySelectorAll('.btn-rec');
+    totalRequiredItems = recButtons.length;
+    updateProgressDisplay();
+});
+
+function updateProgressDisplay() {
+    const count = recordedItems.size;
+    const percent = totalRequiredItems > 0 ? Math.round((count / totalRequiredItems) * 100) : 0;
+    
+    document.getElementById('progressBar').style.width = percent + '%';
+    document.getElementById('progressText').innerText = `${count} / ${totalRequiredItems} (${percent}%)`;
+
+    if (count >= totalRequiredItems && totalRequiredItems > 0) {
+        setTimeout(() => {
+            document.getElementById('completionPopup').style.display = 'flex';
+        }, 500);
+    }
+}
+
+/* Record audio */
+async function toggleRecord(id, btn) {
+    if (btn.classList.contains('recording')) {
+        mediaRecorder.stop();
+        btn.classList.remove('recording');
+        btn.innerText = '🎤';
+    } else {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks[id] = [];
+
+            mediaRecorder.ondataavailable = e => { audioChunks[id].push(e.data); };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunks[id], { type: 'audio/mp3' });
+                audioUrls[id] = URL.createObjectURL(blob);
+                const playBtn = document.getElementById(`playRec_${id}`);
+                if (playBtn) playBtn.style.display = 'inline-block';
+                
+                recordedItems.add(id);
+                updateProgressDisplay();
+            };
+
+            mediaRecorder.start();
+            btn.classList.add('recording');
+            btn.innerText = '⏹';
+        } catch (err) {
+            alert('Vui lòng cấp quyền truy cập Micro!');
+        }
+    }
+}
+
+function playRecord(id) {
+    if (audioUrls[id]) {
+        const audio = new Audio(audioUrls[id]);
+        audio.play();
+    }
+}
+
+/* Admin Quick Test Function */
+function adminQuickTest() {
+    const recButtons = document.querySelectorAll('.btn-rec');
+    recButtons.forEach((btn, index) => {
+        recordedItems.add(`test_item_${index}`);
+    });
+    updateProgressDisplay();
+}
+</script>
+</body>
+</html>
